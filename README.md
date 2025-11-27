@@ -11,12 +11,12 @@ This package a wrapper for Apache FreeMarker.
 ## How to use
 
   - `JAVA_HOME` should be set properly
-  - `npm i freemarker -S`
+  - `npm i @olton/freemarker -S`
 
 #### Render string
 
 ```javascript
-import Freemarker from 'freemarker';
+import Freemarker from '@olton/freemarker';
 
 const freemarker = new Freemarker();
 
@@ -33,31 +33,31 @@ freemarker.render('<h1>${title}</h1>', { title: 'test render' }, (err, result) =
 #### Render file
 
 ```javascript
-import Freemarker from 'freemarker';
+import Freemarker from '@olton/freemarker';
 import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const freemarker = new Freemarker({ root: __dirname });
+const freemarker = new Freemarker({ root: __dirname, suffix: '.tpl' });
 
-freemarker.renderFile(path.join(__dirname, 'index.ftl'), data, (err, result) => {
+freemarker.renderFile(path.join(__dirname, 'index'), data, (err, result) => {
   if (err) {
     throw new Error(err);
   }
   console.log(result);
 });
 ```
-In this example, `path.join(__dirname, 'index.ftl')` can be replaced with `index` or `index.ftl`
+In this example, `path.join(__dirname, 'index')` can be replaced with `index` or `index.tpl` because we set `root` and `suffix` options.
 
 ## Test
-> node with ESM support is required
+Node with ESM support is required!
 
 `npm test`
 
-## LICENSE
-MIT
+## License
+This product is licensed under a [MIT](LICENSE) license.
 
-### Thanks 
+---
 
-Thank to [kaola-fed](https://github.com/kaola-fed) for original release.
+Thanks to [kaola-fed](https://github.com/kaola-fed) for original release.

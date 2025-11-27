@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import crypto from 'crypto'
 import { execFile } from 'child_process'
-import { createTmp } from '../polyfill/assign-json'
+import { createTmp } from '../polyfill/assign-json.js'
 import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)

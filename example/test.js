@@ -1,6 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { Freemarker } from '../dist/freemarker.js'
+import Freemarker from '../dist/freemarker.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

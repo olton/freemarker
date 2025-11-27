@@ -1,4 +1,4 @@
-import * as fs from '../util/fs'
+import * as fs from '../util/fs.js'
 import path from 'path'
 import * as uuid from 'uuid'
 

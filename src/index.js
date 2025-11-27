@@ -1,4 +1,5 @@
-import { Freemarker } from './main/freemarker'
-import { info } from './util/info'
+import { Freemarker } from './main/freemarker.js'
+import { info } from './util/info.js'
 
-export { Freemarker, info }
+export { info }
+export default Freemarker
