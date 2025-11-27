@@ -1,0 +1,132 @@
+import os from 'os'
+import fs from 'fs'
+import path from 'path'
+import crypto from 'crypto'
+import { execFile } from 'child_process'
+import { createTmp } from '../polyfill/assign-json'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+class Freemarker {
+    constructor (options = {}) {
+        this.tmpDir = os.tmpdir()
+        this.sourceRoot = options.root || this.tmpDir
+        this.suffix = '.' + (options.suffix || 'ftl')
+        this.tagSyntax = options.tagSyntax || 'angleBracket'
+        this.cmd = path.join(path.resolve(__dirname, '..'),
+            `fmpp/bin/fmpp${os.platform() === 'win32'
+                ? '.bat'
+                : ''}`)
+    }
+
+    _randomFile () {
+        return path.join(this.tmpDir, crypto.randomBytes(20).toString('hex'))
+    }
+
+    _writeConfig (configFile, config = {}) {
+        let str = ''
+        for (let key in config) {
+            str += `${key}: ${config[key]}\n`
+        }
+        fs.writeFileSync(configFile, str, 'utf8')
+    }
+
+    _writeData (tddFile, data = {}) {
+        fs.writeFileSync(tddFile, JSON.stringify(data), 'utf8')
+    }
+
+    _writeFTL (ftlFile, str = '') {
+        fs.writeFileSync(ftlFile, str, 'utf8')
+    }
+
+    _cleanFiles (files = []) {
+        files.forEach(file => {
+            fs.existsSync(file) && fs.unlinkSync(file)
+        })
+    }
+
+    _getRealPath (file) {
+        let _file = file
+        if (!_file.endsWith(this.suffix)) {
+            _file += this.suffix
+        }
+        if (!path.isAbsolute(_file)) {
+            _file = path.join(this.sourceRoot, _file)
+        }
+        return _file
+    }
+
+    render (str, data, callback) {
+        const ftlFile = this._randomFile() + this.suffix
+        this._writeFTL(ftlFile, str)
+        this.renderFile(ftlFile, data, (err, result) => {
+            callback(err, result)
+            this._cleanFiles([ftlFile])
+        })
+    }
+
+    async renderFile (file, data = {}, callback = () => {}) {
+        const _file = this._getRealPath(file)
+
+        if (Object.entries(data).length === 0) {
+            return this.renderProxy(_file, {}, callback)
+        }
+
+        let { tempPath, cleanFile, error, lines } = await createTmp(_file, data, this.tagSyntax)
+        if (error) {
+            return callback(error)
+        }
+        this.renderProxy(tempPath, {}, (error, result) => {
+            callback(error
+                ? error.replace(/line (\d+)\,/g, (match, line) => {
+                    return `line ${Number(line) - lines},`
+                })
+                : error, result)
+            cleanFile()
+        })
+
+    }
+
+    renderProxy (file, data, callback) {
+        if (!file) return callback('No ftl file')
+
+        const htmlFile = this._randomFile()
+        const tddFile = this._randomFile()
+        const configFile = this._randomFile()
+        const config = {
+            sourceRoot: this.sourceRoot,
+            tagSyntax: this.tagSyntax,
+            outputFile: htmlFile,
+            sourceEncoding: 'UTF-8',
+            outputEncoding: 'UTF-8',
+            data: `tdd(${tddFile})`,
+        }
+        this._writeData(tddFile, data)
+        this._writeConfig(configFile, config)
+
+        const args = os.platform() === 'win32'
+            ? ['/c', this.cmd, file, '-C', configFile]
+            : [file, '-C', configFile]
+
+        const command = os.platform() === 'win32'
+            ? 'cmd.exe'
+            : this.cmd
+
+        execFile(command, args, (err, log) => {
+            let result = ''
+            if (fs.existsSync(htmlFile)) {
+                result = fs.readFileSync(htmlFile, 'utf8')
+            }
+            callback((err || !/DONE/.test(log))
+                ? log
+                : null, result)
+            this._cleanFiles([htmlFile, tddFile, configFile])
+        })
+    }
+}
+
+export {
+    Freemarker
+}
