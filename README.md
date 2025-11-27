@@ -53,5 +53,5 @@ In this example, `path.join(__dirname, 'index.ftl')` can be replaced with `index
 ## LICENSE
 MIT
 
-[npm-url]: https://npmjs.org/package/freemarker
-[npm-image]: https://img.shields.io/npm/v/freemarker.svg
+[npm-url]: https://npmjs.org/package/@olton/freemarker
+[npm-image]: https://img.shields.io/npm/v/@olton/freemarker.svg

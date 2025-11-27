@@ -1,6 +1,6 @@
-const fs = require('../util/fs');
-const path = require('path');
-const uuid = require('uuid');
+import * as fs from '../util/fs'
+import path from 'path'
+import * as uuid from 'uuid'
 
 const escapeSymbol = (str) => {
   return str.replace(/((\#\{)|(\@\{)|(\$\{))([^}]*)\}?/g, function (...args) {

@@ -1,5 +1,8 @@
-const path = require('path');
-const Freemarker = require('../dist/app.js');
+import path from 'path'
+import { fileURLToPath } from 'url'
+import { Freemarker } from '../dist/freemarker.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const data = {
   title: 'Hello World',
