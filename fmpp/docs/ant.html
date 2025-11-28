@@ -75,7 +75,7 @@ document.createElement('nav');
 
 <p>There is no parameter that directly corresponds to the <code><a href="settings.html#key_sources">sources</a></code> setting. The sources are chosen with nested <code>&lt;fileset></code>-style parameters and nested elements (as <code>include</code> and <code>exclude</code>). However, if you use the <code><a href="settings.html#key_outputFile">outputFile</a></code> setting, you can't use <code>&lt;fileset></code>-style stuff, and <code><a href="settings.html#key_sources">sources</a></code> will be specified with the  <code>sourceFile</code> parameter.
 
-<p>Alternatively, the <code><a href="settings.html#key_data">data</a></code>, <code><a href="settings.html#key_localData">localData</a></code>, <code><a href="settings.html#key_borders">borders</a></code>, <code><a href="settings.html#key_modes">modes</a></code>, <code><a href="settings.html#key_turns">turns</a></code>, <code><a href="settings.html#key_xmlRenderings">xmlRenderings</a></code> and <code><a href="settings.html#key_freemarkerLinks">freemarkerLinks</a></code> settings can be specified with nested elements instead of parameters. For example, this is equivalent with the above example:</p>
+<p>Alternatively, the <code><a href="settings.html#key_data">data</a></code>, <code><a href="settings.html#key_localData">localData</a></code>, <code><a href="settings.html#key_borders">borders</a></code>, <code><a href="settings.html#key_modes">modes</a></code>, <code><a href="settings.html#key_turns">turns</a></code>, <code><a href="settings.html#key_xmlRenderings">xmlRenderings</a></code>, <code><a href="settings.html#key_outputFormatsByPath">outputFormatsByPath</a></code> and <code><a href="settings.html#key_freemarkerLinks">freemarkerLinks</a></code> settings can be specified with nested elements instead of parameters. For example, this is equivalent with the above example:</p>
 
 <pre>&lt;project name=&quot;FMPP test&quot; default=&quot;build&quot;&gt;
     &lt;taskdef name=&quot;fmpp&quot; classname=&quot;fmpp.tools.AntTask&quot; /&gt;
@@ -151,7 +151,7 @@ document.createElement('nav');
 
 <p>The FMPP task accepts the following nested elements:
 <ul>
-  <li>Elements for attribute substitution: Using these elements is the same as if you were use the attributes (parameters) with the same name, and with the same value as the nested text (or CDATA section) of the elements. Ant property values (<code>${foo}</code>) are not expanded by default, but you can override this with a <code>expandProperties="yes"</code> attribute. Note that you etiher give a certain setting with attribute, or with element, but not both.
+  <li>Elements for attribute substitution: Using these elements is the same as if you were use the attributes (parameters) with the same name, and with the same value as the nested text (or CDATA section) of the elements. Ant property values (<code>${foo}</code>) are not expanded by default, but you can override this with a <code>expandProperties="yes"</code> attribute. Note that you either give a certain setting with attribute, or with element, but not both.
     <ul>
       <li><code>data</code>
       <li><code>localData</code>
@@ -159,6 +159,7 @@ document.createElement('nav');
       <li><code>modes</code>
       <li><code>turns</code>
       <li><code>xmlRenderings</code>
+      <li><code>outputFormatsByPath</code>
       <li><code>freemarkerLinks</code>
     </ul>
   <li><code>&lt;fileset></code>-style elements (see the Ant documentation for more details):
@@ -229,13 +230,13 @@ document.createElement('nav');
 </div>
 <div class="footer-right">
 <div class="generated">
-Generated on <time itemprop="dateModified" datetime="2014-11-04T23:05:28Z" title="November 4, 2014 11:05:28 PM GMT">Nov 4, 2014 11:05 PM GMT</time><br>
-For FMPP version 0.9.15
+Generated on <time itemprop="dateModified" datetime="2018-09-03T21:47:41Z" title="September 3, 2018 9:47:41 PM GMT">Sep 3, 2018 09:47 PM GMT</time><br>
+For FMPP version 0.9.16
 </div>
 <div class="external-links">
 <a href="http://sourceforge.net" rel="nofollow">
 <img src="style/sflogo.png" alt="SourceForge Logo" width="88" height="31"> </a>
-<a href="http://freemarker.org"><img src="style/poweredby_sq_simple.png" alt="Powered by FreeMarker" width="88" height="31"></a> </div>
+<a href="https://freemarker.apache.org/"><img src="style/poweredby_sq_simple.png" alt="Powered by FreeMarker" width="88" height="31"></a> </div>
 </div>
 </div>
 </div>

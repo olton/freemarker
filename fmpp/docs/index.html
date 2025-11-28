@@ -31,7 +31,7 @@ document.createElement('nav');
 <img src="style/fmpptitle.png" alt="FMPP" />
 </div>
 FMPP - FreeMarker-based file PreProcessor
-<br>Version 0.9.15
+<br>Version 0.9.16
 <ul class="social-icons"><li><a class="github" href="https://github.com/freemarker/fmpp">Github</a></li><li><a class="twitter" href="https://twitter.com/freemarker">Twitter</a></li></ul>
 </div>
 </div>
@@ -46,7 +46,8 @@ FMPP - FreeMarker-based file PreProcessor
     <li><a href="#sect1">What is FMPP?</a></li>
     <li><a href="#sect3">Documentation</a></li>
     <li><a href="#sect4">Download</a></li>
-    <li><a href="#sect5">Contact</a></li>
+    <li><a href="#sect5">Project history and status</a></li>
+    <li><a href="#sect6">Contact</a></li>
   </ul>
   <div class="clear"></div>
               </div>
@@ -54,7 +55,7 @@ FMPP - FreeMarker-based file PreProcessor
               
 <a name="sect1"></a>
      <h2>What is FMPP?</h2>
-  <p>FMPP is a general-purpose text file preprocessing tool that uses <a href="http://freemarker.org/">FreeMarker</a> templates. It process entire directories recursively. It can be used  for generating complete static websites, source code, configuration files, etc. It can insert data from sources like CSV, XML, and JSON into the generated files. (You can add new kind of data sources in Java.) <a href="qtour.html">See the Tutorial</a> for a more concrete introduction.</p>
+  <p>FMPP is a general-purpose text file preprocessing tool that uses <a href="https://freemarker.apache.org/">FreeMarker</a> templates. It process entire directories recursively. It can be used  for generating complete static websites, source code, configuration files, etc. It can insert data from sources like CSV, XML, and JSON into the generated files. (You can add new kind of data sources in Java.) <a href="qtour.html">See the Tutorial</a> for a more concrete introduction.</p>
   
   <p>FMPP can be used with UN*X-style command-line interface, or as <a href="http://ant.apache.org">Ant</a> task, or can be embedded into your application using its Java API.</p>
 
@@ -120,38 +121,37 @@ FMPP - FreeMarker-based file PreProcessor
   <ul>
     <li><a href="manual.html"><strong>FMPP Manual</strong></a></li>
     <li><a href="api/index.html">FMPP Java API</a></li>
-    <li><a href="freemarker/index.html" rel="nofollow">FreeMarker Manual</a></li>
-    <li><a href="freemarker/api/index.html" rel="nofollow">FreeMarker Java API</a></li>
+    <li><a href="freemarker/index.html">FreeMarker Manual</a></li>
+    <li><a href="freemarker/api/index.html">FreeMarker Java API</a></li>
   </ul>
 
 <a name="sect4"></a>
      <h2>Download</h2>
-  <p>To download the latest release, please visit the FMPP homepage: <a href="http://fmpp.sourceforge.net/">http://fmpp.sourceforge.net/</a></p>
+  <p>To download the latest release, please visit the FMPP website: <a href="http://fmpp.sourceforge.net/">http://fmpp.sourceforge.net/</a></p>
   
-  <p>For <strong>text editor and IDE plug-ins</strong> and other FreeMarker template-related tools, please visit the FreeMarker homepage: <a href="http://freemarker.org/">http://freemarker.org/</a> (mirror: <a href="http://freemarker.sourceforge.net/">http://freemarker.sourceforge.net/)</a></p>
+  <p>For <strong>text editor and IDE plug-ins</strong> and other FreeMarker template-related tools, please visit the FreeMarker homepage: <a href="https://freemarker.apache.org/">https://freemarker.apache.org/</a></p>
 
 <a name="sect5"></a>
+     <h2>Project history and status</h2>
+
+  <p>FMPP was mostly written in 2003 (so it predates Java generics, Maven-like dependency management, etc.), by a single guy (me), to automate some tasks at work. The code/design of my 15+ year younger myself (and of the era maybe) is funny/WTF at places, but it works, doesn't cut any corners, and was used quite heavily by many.
+  
+  <p>The project is in maintenance mode, but check the <a href="versions.html">version history</a> to see if it's still maintained. If you hit some blocker problem, it's likely that I will fix it and do a release.
+  
+
+<a name="sect6"></a>
      <h2>Contact</h2>
 
-  <p>Ask for <strong>help</strong> or provide suggestions:</p>
-  <ul>
-    <li>on the <strong>mailing list</strong> (The preferred way. Low traffic.):</li>
-      <ul>
-        <li>Subscribe/unsubscribe: <a href="http://lists.sourceforge.net/mailman/listinfo/fmpp-open">http://lists.sourceforge.net/mailman/listinfo/fmpp-open</a></li>
-        <li>News group interface: <a href="nntp://news.gmane.org/gmane.comp.text.fmpp">nntp://news.gmane.org/gmane.comp.text.fmpp</a></li>
-        <li>Web interface (read only): <a href="http://news.gmane.org/thread.php?group=gmane.comp.text.fmpp">http://news.gmane.org/thread.php?group=gmane.comp.text.fmpp</a></li>
-      </ul>
-    </li>
-    <li>on the SourceForge.net Web forum: <a href="http://sourceforge.net/forum/forum.php?forum_id=254571">http://sourceforge.net/forum/forum.php?forum_id=254571</a></li>
-    <li>with private e-mail: <a href="mailto:ddekanyREMOVETHIS@freemail.hu">ddekanyREMOVETHIS@freemail.hu</a> (delete the "REMOVETHIS"!)</li>
-  </ul>
-
+  <p>Help: <a href="http://stackoverflow.com/questions/ask?tags=fmpp">Ask on Stack Overflow with "fmpp" tag</a>.</p>
+  <p>Suggestions: Use the <a href="https://sourceforge.net/p/fmpp/feature-requests/">Feature Request tracker</a>, or write to <a href="mailto:ddekanyREMOVETHIS@freemail.hu">ddekanyREMOVETHIS@freemail.hu</a> (delete the "REMOVETHIS"!)</p>
   <div class="report-bugs">
-    <p class="strong"><strong>Please report bugs you find!</strong> Any programming, documentation content or grammatical mistakes (even minor typos). Thank you!</p>
-    <p>Use the <a href="http://sourceforge.net/tracker/?func=add&amp;group_id=74591&amp;atid=541453">bug reporting Web page</a>,<br>
-      or e-mail: <a href="mailto:ddekanyREMOVETHIS@freemail.hu">ddekanyREMOVETHIS@freemail.hu</a> (delete the "REMOVETHIS"!)</p>
+    <p class="strong">
+      Please report bugs and documentation mistakes you find
+      on the <a href="https://sourceforge.net/p/fmpp/bugs/">bug tracker</a>
+      or to <a href="mailto:ddekanyREMOVETHIS@freemail.hu">ddekanyREMOVETHIS@freemail.hu</a> (delete the "REMOVETHIS"!)!
+    </p>
 
-    <p>Please report FreeMarker bugs at the <a rel="nofollow" href="http://sourceforge.net/tracker/?func=add&amp;group_id=794&amp;atid=100794">FreeMarker bug reporting Web page</a>, not for me. If you are not sure if you have found a FreeMarker or FMPP bug, just report it as an FMPP bug.</p>
+    <p>Report FreeMarker bugs on the <a rel="nofollow" href="https://sourceforge.net/p/freemarker/bugs/">FreeMarker bug tracker</a>, not on the FMPP bug tracker. (If you are not sure which is it, then just report on any of them.)</p>
   </div>
 
   
@@ -168,13 +168,13 @@ FMPP - FreeMarker-based file PreProcessor
 </div>
 <div class="footer-right">
 <div class="generated">
-Generated on <time itemprop="dateModified" datetime="2014-11-04T23:05:28Z" title="November 4, 2014 11:05:28 PM GMT">Nov 4, 2014 11:05 PM GMT</time><br>
-For FMPP version 0.9.15
+Generated on <time itemprop="dateModified" datetime="2018-09-03T21:47:42Z" title="September 3, 2018 9:47:42 PM GMT">Sep 3, 2018 09:47 PM GMT</time><br>
+For FMPP version 0.9.16
 </div>
 <div class="external-links">
 <a href="http://sourceforge.net" rel="nofollow">
 <img src="style/sflogo.png" alt="SourceForge Logo" width="88" height="31"> </a>
-<a href="http://freemarker.org"><img src="style/poweredby_sq_simple.png" alt="Powered by FreeMarker" width="88" height="31"></a> </div>
+<a href="https://freemarker.apache.org/"><img src="style/poweredby_sq_simple.png" alt="Powered by FreeMarker" width="88" height="31"></a> </div>
 </div>
 </div>
 </div>

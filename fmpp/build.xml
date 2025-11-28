@@ -39,7 +39,7 @@
   <filter token="TIMESTAMP" value="${timeStamp}" />
 
   <property name="freemarkerDocs.path"
-            value="${freemarkerReleases.path}/freemarker-${dependency.freemarker.version}/documentation/_html"
+            value="${freemarkerReleases.path}/apache-freemarker-${dependency.freemarker.version}-bin/documentation/_html"
   />
   <available file="${freemarkerDocs.path}" type="dir" property="freemarkerDocs.available" />
   <property name="dist.dir" value="build/dist/fmpp_${version}" />
@@ -82,8 +82,8 @@
            encoding="utf-8"
            deprecation="off"
            debug="on"
-           source="1.4"
-           target="1.4"
+           source="1.5"
+           target="1.5"
     >
       <classpath refid="classpath.path" />
     </javac>
@@ -136,6 +136,7 @@
     <copy todir="build/docs/examples" includeEmptyDirs="true">
       <fileset dir="src/docs/examples">
         <exclude name="*/out/" />
+        <exclude name="*/log.fmpp" />
       </fileset>
     </copy>
   </target>
@@ -202,6 +203,11 @@
                    replace="/\* \1 - JDK 8 usability fix regexp substitutions applied \*/"
     />
 
+    <!-- Remove broken link: -->
+    <replaceregexp file="${file}" flags="gs" encoding="utf-8"
+                   match="@import url\('resources/fonts/dejavu.css'\);\s*" replace=""
+    />
+    
     <!-- Font family fixes: -->
     <replaceregexp file="${file}" flags="gsi" encoding="utf-8" match="['&quot;]DejaVu Sans['&quot;]" replace="Arial" />
     <replaceregexp file="${file}"
@@ -258,6 +264,7 @@
         <exclude name="build/" />
         <exclude name="build.properties" />
         <exclude name="node_modules/" />
+        <exclude name="package-lock.json" />
         <exclude name="**/.*/" />
         <exclude name="README.*" />
       </fileset>
@@ -297,6 +304,7 @@
     <copy todir="build/site/site_${version}">
       <fileset dir="build/docs">
         <exclude name="examples/" />
+        <exclude name="freemarker/" />
       </fileset>
     </copy>
     <!-- Create a tar.gz for quicker uploading -->
@@ -314,8 +322,8 @@
            encoding="utf-8"
            deprecation="on"
            debug="on"
-           source="1.4"
-           target="1.4"
+           source="1.5"
+           target="1.5"
     >
       <classpath refid="testClasspath.path" />
     </javac>

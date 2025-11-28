@@ -120,6 +120,11 @@ public class AntTask extends org.apache.tools.ant.taskdefs.MatchingTask {
                 Settings.NAME_SOURCE_ROOT, sourceRoot.getAbsolutePath());
     }
 
+    public void setRecommendedDefaults(String recommendedDefaults) {
+        initialOps.setProperty(
+                Settings.NAME_RECOMMENDED_DEFAULTS, recommendedDefaults);
+    }
+
     public void setFreemarkerIncompatibleImprovements(String fmIcI) {
         initialOps.setProperty(
                 Settings.NAME_FREEMARKER_INCOMPATIBLE_IMPROVEMENTS, fmIcI);
@@ -256,6 +261,41 @@ public class AntTask extends org.apache.tools.ant.taskdefs.MatchingTask {
     public void setTagSyntax(String tagSyntax) {
         initialOps.setProperty(Settings.NAME_TAG_SYNTAX, tagSyntax);
     }
+
+    /**
+     * @since 0.9.16
+     */
+    public void setInterpolationSyntax(String interpolationSyntax) {
+        initialOps.setProperty(Settings.NAME_INTERPOLATION_SYNTAX, interpolationSyntax);
+    }
+
+    /**
+     * @since 0.9.16
+     */
+    public void setOutputFormat(String outputFormat) {
+        initialOps.setProperty(Settings.NAME_OUTPUT_FORMAT, outputFormat);
+    }
+    
+    /**
+     * @since 0.9.16
+     */
+    public void setOutputFormatsByPath(String outputFormatsByPath) {
+        initialOps.setProperty(Settings.NAME_OUTPUT_FORMATS_BY_PATH, outputFormatsByPath);
+    }
+
+    /**
+     * @since 0.9.16
+     */
+    public void addConfiguredOutputFormatsByPath(AntAttributeSubstitution ats) {
+        doAttributeSubstitution(Settings.NAME_OUTPUT_FORMATS_BY_PATH, ats);
+    }
+    
+    /**
+     * @since 0.9.16
+     */
+    public void setMapCommonExtensionsToOutputFormats(String value) {
+        initialOps.setProperty(Settings.NAME_MAP_COMMON_EXTENSIONS_TO_OUTPUT_FORMATS, value);
+    }
     
     public void setOutputEncoding(String outputEncoding) {
         initialOps.setProperty(Settings.NAME_OUTPUT_ENCODING, outputEncoding);
@@ -328,6 +368,13 @@ public class AntTask extends org.apache.tools.ant.taskdefs.MatchingTask {
     public void setRemovePostfix(String removePostfix) {
         initialOps.setProperty(
                 Settings.OLD_NAME_REMOVE_POSTFIX, removePostfix);
+    }
+    
+    /**
+     * @since 0.9.16
+     */
+    public void setRemoveFreemarkerExtensions(String value) {
+        initialOps.setProperty(Settings.NAME_REMOVE_FREEMARKER_EXTENSIONS, value);
     }
 
     public void setSourceEncoding(String sourceEncoding) {

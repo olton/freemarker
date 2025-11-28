@@ -41,41 +41,71 @@ document.createElement('nav');
               <div class="content-left">
     <p class="toc-header">Page contents</p>
   <ul class="table-of-contents">
-    <li><a href="#sect1">0.9.15</a></li>
-    <li><a href="#sect2">0.9.14</a></li>
-    <li><a href="#sect3">0.9.13</a></li>
-    <li><a href="#sect4">0.9.12</a></li>
-    <li><a href="#sect5">0.9.11</a></li>
-    <li><a href="#sect6">0.9.10</a></li>
-    <li><a href="#sect7">0.9.9</a></li>
-    <li><a href="#sect8">0.9.8</a></li>
-    <li><a href="#sect9">0.9.7</a></li>
-    <li><a href="#sect10">0.9.6</a></li>
-    <li><a href="#sect11">0.9.5</a></li>
-    <li><a href="#sect12">0.9.4</a></li>
-    <li><a href="#sect13">0.9.3</a></li>
-    <li><a href="#sect14">0.9.2</a></li>
-    <li><a href="#sect15">0.9.1</a></li>
-    <li><a href="#sect16">0.9.0</a></li>
-    <li><a href="#sect17">0.8.12</a></li>
-    <li><a href="#sect18">0.8.11</a></li>
-    <li><a href="#sect19">0.8.10</a></li>
-    <li><a href="#sect20">0.8.9</a></li>
-    <li><a href="#sect21">0.8.8</a></li>
-    <li><a href="#sect22">0.8.7</a></li>
-    <li><a href="#sect23">0.8.6</a></li>
-    <li><a href="#sect24">0.8.5</a></li>
-    <li><a href="#sect25">0.8.4</a></li>
-    <li><a href="#sect26">0.8.3</a></li>
-    <li><a href="#sect27">0.8.2</a></li>
-    <li><a href="#sect28">0.8.1</a></li>
-    <li><a href="#sect29">0.8.0</a></li>
+    <li><a href="#sect1">0.9.16</a></li>
+    <li><a href="#sect2">0.9.15</a></li>
+    <li><a href="#sect3">0.9.14</a></li>
+    <li><a href="#sect4">0.9.13</a></li>
+    <li><a href="#sect5">0.9.12</a></li>
+    <li><a href="#sect6">0.9.11</a></li>
+    <li><a href="#sect7">0.9.10</a></li>
+    <li><a href="#sect8">0.9.9</a></li>
+    <li><a href="#sect9">0.9.8</a></li>
+    <li><a href="#sect10">0.9.7</a></li>
+    <li><a href="#sect11">0.9.6</a></li>
+    <li><a href="#sect12">0.9.5</a></li>
+    <li><a href="#sect13">0.9.4</a></li>
+    <li><a href="#sect14">0.9.3</a></li>
+    <li><a href="#sect15">0.9.2</a></li>
+    <li><a href="#sect16">0.9.1</a></li>
+    <li><a href="#sect17">0.9.0</a></li>
+    <li><a href="#sect18">0.8.12</a></li>
+    <li><a href="#sect19">0.8.11</a></li>
+    <li><a href="#sect20">0.8.10</a></li>
+    <li><a href="#sect21">0.8.9</a></li>
+    <li><a href="#sect22">0.8.8</a></li>
+    <li><a href="#sect23">0.8.7</a></li>
+    <li><a href="#sect24">0.8.6</a></li>
+    <li><a href="#sect25">0.8.5</a></li>
+    <li><a href="#sect26">0.8.4</a></li>
+    <li><a href="#sect27">0.8.3</a></li>
+    <li><a href="#sect28">0.8.2</a></li>
+    <li><a href="#sect29">0.8.1</a></li>
+    <li><a href="#sect30">0.8.0</a></li>
   </ul>
   <div class="clear"></div>
               </div>
             <div class="page-content content-right">
               
 <a name="sect1"></a>
+     <h2>0.9.16</h2>
+  <p>Date of release: 2018-09-03</p>
+  <p>Bug fixes: None</p>
+  <p>New features, improvements:</p>
+  <ul>
+    <li>Added new setting, <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code>, which when set to 0.9.16, will change some defaults of FMPP to better, more modern ones. Setting this to 0.9.16 is not backward compatible, so if you intend to do that in an older project, check what changes in the documentation of <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code>! (The Java API was extended accordingly; the <code>fmpp.Engine</code> now has <a href="api/fmpp/Engine.html#constructor.summary">constructors</a> that get a <code>Version recommendedDefaults</code> parameter.)</li>
+    <li>Added new settings, <code><a href="settings.html#key_outputFormat">outputFormat</a></code>, and <code><a href="settings.html#key_outputFormatsByPath">outputFormatsByPath</a></code> and <code><a href="settings.html#key_mapCommonExtensionsToOutputFormats">mapCommonExtensionsToOutputFormats</a></code>. "Output formats" is a <a href="freemarker/dgui_misc_autoescaping.html">FreeMarker feature</a> that (among others) allows better auto-escaping, deprecating <code>&lt;#escape ...>...&lt;/#escape></code>. With these settings you can associate output format (and thus the desired kind of auto-escaping) to templates without adding anything inside the templates.</li>
+    <li>Added new setting, <code><a href="settings.html#key_interpolationSyntax">interpolationSyntax</a></code>. This is especially handy if the <code>${</code> pattern clashes with the static parts that you need to generate (like when you generate JSP or Bash scripts), in which case you can set this setting to <code>squareBracket</code> then write FreeMarker interpolations like <code>[=<em>expression</em>]</code>.</li>
+    <li>Added new setting, <code><a href="settings.html#key_removeFreemarkerExtensions">removeFreemarkerExtensions</a></code>. When set to <code>true</code>, this removes the standard FreeMarker template file extensions (<code>ftl</code>, <code>ftlh</code>, <code>ftlx</code>) from the output file name. While you can achieve the same with the <code><a href="settings.html#key_removeExtensions">removeExtensions</a></code> setting, it's cleaner this way, especially as with <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code> set to 0.9.16 it defaults to <code>true</code>.</li>
+    <li>The list of file extensions that are treated as binary files is extended with lot of extensions frequent nowadays (or just were missed earlier); see them <a href="settings.html#processingMode">in this section...</a>
+    <li>When you have a JSON file that contains a JSON object (<code>{ "key": value, ... }</code>) on the top-level, and you load it with <code>json(<em>file</em>)</code>, now the resulting value can be used like a TDD hash. That is, you can use it directly as the value of the <code><a href="settings.html#key_data">data</a></code> setting, or you can add its entires (the key-value pairs) to another hash with <a href="tdd.html#hashAddition">TDD hash addition</a>. (This is actually not specific to JSON. TDD now understands <code>freemarker.template.TemplateHashModelEx</code>, and appropriate <code>AdapterTemplateModel</code> objects, where a TDD hash is expected. So this works for any other custom data loaders that return such value as well.)</li>
+    <li>Enabled using <code>?api</code> in FreeMarker templates (i.e., set the FreeMarker <code>api_builtin_enabled</code> configuration setting to <code>true</code>). (This doesn't decrease security in FMPP, as templates always could evaluate BeanShell scripts anyway.)
+    <li>Improved <code>FMPP_HOME</code> auto-detection in the Bash start script (<code>/bin/fmpp</code>): If the directory that contains the start script has no <code>lib/fmpp.jar</code> in it, then the <code>FMPP_HOME</code> will be set to the first of the following directories that contains <code>lib/fmpp.jar</code>: <code>${HOME}/opt/fmpp/</code>, <code>/opt/fmpp/</code>, <code>/usr/lib/fmpp/</code></li>
+    <li>Values loaded with the <a href="dataloader.html#key_json">JSON data loader</a> now implement <code>freemarker.template.AdapterTemplateModel</code> to allow more efficient conversion when passing them to Java methods from templates.</li>
+    <li>
+      Updated dependencies:
+      <ul>
+        <li><span class="warning"><strong>Attention!</strong> </span>  The minimum required Java version has been increased from 1.4 to 1.5.</li>
+        <li><span class="warning"><strong>Attention!</strong> </span>  The minimum required FreeMarker version has been increased from 2.3.21 to 2.3.28.</li>
+        <li>The distribution now contains Apache FreeMarker 2.3.28 (note that its owner has changed to the Apache Software Foundation)</li>
+      </ul>
+    </li>
+    <li><span class="warning"><strong>Warning!</strong> Incompatible Java API change!</span>  In the unlikely case someone calls <code>new Engine(null)</code> (with literal <code>null</code>), that will now be a Java compilation error when the <code>java</code> file is recompiled, as now it's ambiguous,
+    and should be rewritten to <code>new Engine((Version) null)</code>. Binaries (<code>class</code> files) are not affected by this.</li>
+    <li>Some minor API additions, code cleanups, and documentation cleanups.
+    <li>Updated example projects to use modern FreeMarker and FMPP features
+  </ul>
+
+<a name="sect2"></a>
      <h2>0.9.15</h2>
   <p>Date of release: 2014-11-05</p>
   <p>Bug fixes:</p>
@@ -121,7 +151,7 @@ document.createElement('nav');
   </ul>
   
 
-<a name="sect2"></a>
+<a name="sect3"></a>
      <h2>0.9.14</h2>
   <p>Date of release: 2009-03-15</p>
 
@@ -150,7 +180,7 @@ document.createElement('nav');
     <li>Updated <code>freemarker.jar</code> and the included FreeMarker Manual to 2.3.15.</li>
   </ul>
 
-<a name="sect3"></a>
+<a name="sect4"></a>
      <h2>0.9.13</h2>
   <p>Date of release: 2007-12-16</p>
 
@@ -183,7 +213,7 @@ document.createElement('nav');
   </ul>
 
 
-<a name="sect4"></a>
+<a name="sect5"></a>
      <h2>0.9.12</h2>
   <p>Date of release: 2007-04-27</p>
 
@@ -199,7 +229,7 @@ document.createElement('nav');
   </ul>
   
 
-<a name="sect5"></a>
+<a name="sect6"></a>
      <h2>0.9.11</h2>
   <p>Date of release: 2006-03-15</p>
 
@@ -228,7 +258,7 @@ document.createElement('nav');
 
   
 
-<a name="sect6"></a>
+<a name="sect7"></a>
      <h2>0.9.10</h2>
   <p>Date of release: 2005-10-23</p>
 
@@ -260,7 +290,7 @@ document.createElement('nav');
   </ul>
 
 
-<a name="sect7"></a>
+<a name="sect8"></a>
      <h2>0.9.9</h2>
   <p>Date of release: 2005-04-12</p>
 
@@ -288,7 +318,7 @@ document.createElement('nav');
     <li>Fixed some mistakes in the Manual and in the JavaDocs.
   </ul>
 
-<a name="sect8"></a>
+<a name="sect9"></a>
      <h2>0.9.8</h2>
   <p>Date of release: 2005-01-28</p>
 
@@ -310,7 +340,7 @@ document.createElement('nav');
     <li>Fixed test-suite bugs: Windows vs UN*X vs Mac line-breaks, class-path problem in the <code>build.xml</code>.</li>
   </ul>
 
-<a name="sect9"></a>
+<a name="sect10"></a>
      <h2>0.9.7</h2>
   <p>Date of release: 2004-03-01</p>
 
@@ -326,7 +356,7 @@ document.createElement('nav');
     <li>Fixes in the Manual and in the the API JavaDocs.</li>
   </ul>
 
-<a name="sect10"></a>
+<a name="sect11"></a>
      <h2>0.9.6</h2>
   <p>Date of release: 2004-01-20</p>
   
@@ -350,7 +380,7 @@ document.createElement('nav');
   </ul>
   
 
-<a name="sect11"></a>
+<a name="sect12"></a>
      <h2>0.9.5</h2>
   <p>Date of release: 2004-01-14</p>
   
@@ -381,7 +411,7 @@ document.createElement('nav');
   </ul>  
 
 
-<a name="sect12"></a>
+<a name="sect13"></a>
      <h2>0.9.4</h2>
   <p>Date of release: 2004-01-03</p>
   
@@ -431,7 +461,7 @@ document.createElement('nav');
   </ul>
     
   
-<a name="sect13"></a>
+<a name="sect14"></a>
      <h2>0.9.3</h2>
   <p>Date of release: 2003-12-22</p>
 
@@ -463,7 +493,7 @@ document.createElement('nav');
     <li>Minor documentation fixes.</li>
   </ul>
 
-<a name="sect14"></a>
+<a name="sect15"></a>
      <h2>0.9.2</h2>
   <p>Date of release: 2003-11-12</p>
 
@@ -474,7 +504,7 @@ document.createElement('nav');
     <li>Minor documentation fixes.</li>
   </ul>
 
-<a name="sect15"></a>
+<a name="sect16"></a>
      <h2>0.9.1</h2>
   <p>Date of release: 2003-11-09</p>
 
@@ -500,7 +530,7 @@ document.createElement('nav');
     <li>The <code>install</code> target of <code>build.xml</code> didn't stopped nicely if the <code>ANT_HOME</code> was not set.</li>
   </ul>
 
-<a name="sect16"></a>
+<a name="sect17"></a>
      <h2>0.9.0</h2>
   <p>Date of release: 2003-10-30
   
@@ -592,14 +622,14 @@ document.createElement('nav');
     <li>Various other little fixes here and there... But don't be sad. Many exciting new bugs has been added during the refactorings... ;)
   </ul>
 
-<a name="sect17"></a>
+<a name="sect18"></a>
      <h2>0.8.12</h2>
   <p>Date of release: 2003-09-30
   <p>New features, improvements:
   <ul>
     <li><span class="warning"><strong>Warning!</strong> Incompatible change!</span> A later nightly build of the uncompleted FreeMarker 2.3 is included. Unfortunately it contains some incompatible changes (Sorry... :( I will not risk nightly FreeMarker builds anymore after 2.3 is out...):
     <ul>
-      <li>White-space stripping is now more aggressive as before: it always removes leading and trailing white-space if the line only contains FTL tags. (Earlier the white-space was not removed if the tag was <code>&lt;#include ...></code> or user-defined directive tag with empty directive syntax as <code>&lt;@myMacro/></code> (or its equivalents: <code>&lt;@myMacro>&lt;/@myMacro></code> and <code>&lt;@myMacro>&lt;/@></code>). Now white-space is removed in these cases as well.) Also, top-level white-space that separates macro definitions and/or assignments is now ignored. <a href="freemarker/dgui_misc_whitespace.html#dgui_misc_whitespace_stripping" rel="nofollow">More information...</a>
+      <li>White-space stripping is now more aggressive as before: it always removes leading and trailing white-space if the line only contains FTL tags. (Earlier the white-space was not removed if the tag was <code>&lt;#include ...></code> or user-defined directive tag with empty directive syntax as <code>&lt;@myMacro/></code> (or its equivalents: <code>&lt;@myMacro>&lt;/@myMacro></code> and <code>&lt;@myMacro>&lt;/@></code>). Now white-space is removed in these cases as well.) Also, top-level white-space that separates macro definitions and/or assignments is now ignored. <a href="freemarker/dgui_misc_whitespace.html#dgui_misc_whitespace_stripping">More information...</a>
       <li>The return value of <code>freemarker.template.TemplateMethodModel.exec(...)</code> is <code>Object</code>, not <code>TemplateModel</code>.
     </ul>
     <li>New <code>pp</code> variable: <code>freemarkerVersion</code>. Also, new <code>fmpp.Engine</code> method: <code>fmpp.Engine.getFreeMarkerVersionNumber()</code>. Also, FreeMarker version number is printed together with FMPP version number everywhere. 
@@ -616,7 +646,7 @@ document.createElement('nav');
     <li><span class="warning"><strong>Warning!</strong> Incompatible change!</span> Setting "ignore CVS files" didn't ignored <code>.#?*</code> files. Now it does.
   </ul>
 
-<a name="sect18"></a>
+<a name="sect19"></a>
      <h2>0.8.11</h2>
   <p>Date of release: 2003-08-11
   <p>New features, improvements:
@@ -638,12 +668,12 @@ document.createElement('nav');
     <li>The snip function of the command-line tool has snipped the text-flood too late sometimes. 
   </ul>
 
-<a name="sect19"></a>
+<a name="sect20"></a>
      <h2>0.8.10</h2>
   <p>Date of release: 2003-07-03
   <p>New features, improvements:
   <ul>
-    <li><span class="warning"><strong>Warning!</strong> Incompatible change!</span> This release uses a nightly build of the uncompleted FreeMarker 2.3. FreeMarker 2.3 adds several important new features to 2.2.x, but it is not fully backward compatible. Do not forget to read the <a href="freemarker/versions_2_3.html" rel="nofollow">list of uncompatible changes in the FreeMarker Manual</a>!
+    <li><span class="warning"><strong>Warning!</strong> Incompatible change!</span> This release uses a nightly build of the uncompleted FreeMarker 2.3. FreeMarker 2.3 adds several important new features to 2.2.x, but it is not fully backward compatible. Do not forget to read the <a href="freemarker/versions_2_3.html">list of uncompatible changes in the FreeMarker Manual</a>!
     <li><code>antProperties</code> improved: You can give the names of Ant properties you want to expose, as parameters. So if you want to expose only properties <code>foo</code> and <code>bar</code>, then just write <code>antProperties(foo, bar)</code>. <a href="dataloader.html#key_antProperites">More info...</a>
     <li>New data loader <code>antProperty</code>, to expose the value of a single Ant property. <a href="dataloader.html#key_antProperty">More info...</a>
     <li>New data loader <code>xml</code>, which uses the new XML wrapper of FreeMarker. It replaces the old <code>xmlInfoset</code> data loader, which is kept only for backward compatibility. <a href="dataloader.html#key_xml">More info...</a>
@@ -655,7 +685,7 @@ document.createElement('nav');
     <li><span class="warning"><strong>Warning!</strong> Incompatible Java API change!</span>  In <code>fmpp.util.FreemarkerUtil</code>, <code>FtlVarToCoreJavaObject</code> is now renamed to <code>ftlVarToCoreJavaObject</code>
   </ul>
 
-<a name="sect20"></a>
+<a name="sect21"></a>
      <h2>0.8.9</h2>
   <p>Date of release: 2003-05-02
   <p>New features, improvements:
@@ -678,7 +708,7 @@ document.createElement('nav');
     <li>The log file didn't stored the source file path for errors that was logged before the "END OF PROCESSING SESSION" message.
   </ul>
 
-<a name="sect21"></a>
+<a name="sect22"></a>
      <h2>0.8.8</h2>
   <p>Date of release: 2003-04-29
   <p>New features, improvements:
@@ -694,7 +724,7 @@ document.createElement('nav');
     <li>Fixing some typos in the error messages and in the documentation.
   </ul>
 
-<a name="sect22"></a>
+<a name="sect23"></a>
      <h2>0.8.7</h2>
   <p>Date of release: 2003-04-12
   <p>New features, improvements:
@@ -708,7 +738,7 @@ document.createElement('nav');
     <li>The classpath in <code>fmpp.jar</code> didn't included <code>bsh.jar</code>.
   </ul>
   
-<a name="sect23"></a>
+<a name="sect24"></a>
      <h2>0.8.6</h2>
   <p>Date of release: 2003-04-06
   <p>New features, improvements:
@@ -724,7 +754,7 @@ document.createElement('nav');
     <li>Minor fixes in the documentation.
   </ul>
 
-<a name="sect24"></a>
+<a name="sect25"></a>
      <h2>0.8.5</h2>
   <p>Date of release: 2003-03-23
   <p>New features, improvements:
@@ -736,7 +766,7 @@ document.createElement('nav');
     <li>Fixes in the documentation.
   </ul>
 
-<a name="sect25"></a>
+<a name="sect26"></a>
      <h2>0.8.4</h2>
   <p>Date of release: 2003-03-21
   <p>New features, improvements:
@@ -751,7 +781,7 @@ document.createElement('nav');
     <li>The output file name deduction was applied twice in certain situations.
   </ul>
 
-<a name="sect26"></a>
+<a name="sect27"></a>
      <h2>0.8.3</h2>
   <p>Date of release: 2003-03-16
   <p>New features, improvements:
@@ -766,7 +796,7 @@ document.createElement('nav');
     <li><code>rar</code> was missing from the list of static file extensions.
   </ul>
 
-<a name="sect27"></a>
+<a name="sect28"></a>
      <h2>0.8.2</h2>
   <p>Date of release: 2003-03-13
   <p>New features, improvements:
@@ -781,7 +811,7 @@ document.createElement('nav');
     <li><code>fmpp.FileUtil.getRelativePath</code> has returned bad results in some rare situations.
   </ul>
 
-<a name="sect28"></a>
+<a name="sect29"></a>
      <h2>0.8.1</h2>
   <p>Date of release: 2003-03-10
   <p>New features, improvements:
@@ -800,7 +830,7 @@ document.createElement('nav');
     <li>Last-generated date was incorrect on the HTML pages.
   </ul>
 
-<a name="sect29"></a>
+<a name="sect30"></a>
      <h2>0.8.0</h2>
   <p>Date of release: 2003-03-05
   <p>The initial Sourceforge release.
@@ -820,13 +850,13 @@ document.createElement('nav');
 </div>
 <div class="footer-right">
 <div class="generated">
-Generated on <time itemprop="dateModified" datetime="2014-11-04T23:05:29Z" title="November 4, 2014 11:05:29 PM GMT">Nov 4, 2014 11:05 PM GMT</time><br>
-For FMPP version 0.9.15
+Generated on <time itemprop="dateModified" datetime="2018-09-03T21:47:42Z" title="September 3, 2018 9:47:42 PM GMT">Sep 3, 2018 09:47 PM GMT</time><br>
+For FMPP version 0.9.16
 </div>
 <div class="external-links">
 <a href="http://sourceforge.net" rel="nofollow">
 <img src="style/sflogo.png" alt="SourceForge Logo" width="88" height="31"> </a>
-<a href="http://freemarker.org"><img src="style/poweredby_sq_simple.png" alt="Powered by FreeMarker" width="88" height="31"></a> </div>
+<a href="https://freemarker.apache.org/"><img src="style/poweredby_sq_simple.png" alt="Powered by FreeMarker" width="88" height="31"></a> </div>
 </div>
 </div>
 </div>

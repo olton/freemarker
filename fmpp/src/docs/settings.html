@@ -110,15 +110,33 @@ To read text files, FMPP uses the source encoding. This is be default ISO-8859-1
 <p>Then, the processing mode is chosen with a sequence of <@a href="pathpattern.html">path patterns</@>, which is defined by the <@s>modes</@s> setting. The first path pattern in the sequence that matches the <@a href="overview.html#virtualPath">virtual path</@a> of the file, chooses the processing mode. If no matching path were found, then FMPP chooses the processing mode automatically:</p>
 <ul>
   <li>If the file extension after converting to lowercase is <@c>xml</@c> and the <@s>xmlRenderings</@s> is not an empty sequence, then it chooses the "renderXml" mode.
-  <li>If the file extension after converting to lowercase is one of: <#list [
-                "jpg", "jpeg", "gif", "png", "swf", "bmp", "pcx", "tga", "tiff",
-                "ico",
-                "zip", "gz", "tgz", "jar", "ace", "bz", "bz2", "tar", "arj",
-                "rar", "lha", "cab", "lzh", "taz", "tz", "arc",
-                "exe", "com", "msi", "class", "dll",
-                "doc", "xls", "pdf", "ps", "chm",
-                "avi", "wav", "mp3", "mpeg", "mpg", "wma", "mov", "fli"]?sort as ext
-      ><@c>${ext}</@><#if ext_has_next>, </#if></#list>, then it chooses the "copy" processing mode.
+  <li>If the file extension after converting to lowercase is known by FMPP as belonging to a binary format, then it chooses the "copy" processing mode. The list of these file extensions is hard-coded into FMPP.
+      <#assign binaryExtsV1 = [
+          "jpg", "jpeg", "gif", "png", "swf", "bmp", "pcx", "tga", "tiff", "ico",
+          "zip", "gz", "tgz", "jar", "ace", "bz", "bz2", "tar", "arj",
+          "rar", "lha", "cab", "lzh", "taz", "tz", "arc",
+          "exe", "com", "msi", "class", "dll",
+          "doc", "xls", "pdf", "ps", "chm",
+          "avi", "wav", "mp3", "mpeg", "mpg", "wma", "mov", "fli"
+      ]>
+      <#assign binaryExtsV2Added = [
+          "webp", "svgz", "tif",
+          "7z", "xz", "txz", "tbz2", "tb2", "z",
+          "deb", "pkg", "rpm", "apk",
+          "iso", "bin", "dmg", "vcd",
+          "sys",
+          "docx", "dotx", "docm", "dot", "odt", "ott", "oth", "odm", 
+          "xlsx", "xlsm", "xltx", "xltm", "xlw", "xlt", "ods", "ots",
+          "ppt", "pps", "pot", "pptx", "pptm", "potx", "potm", "odp", "odg", "otp",
+          "odg", "otg",
+          "mkv", "mp4", "m4v", "m4a", "webm", "mpa", "cda", "aif", "h264", "wma", "wmv", "3gp", "3g2",
+          "ogg", "oga", "mogg", "acc", "flac", "aiff",
+          "flv", "swf",
+          "fnt", "ttf", "otf", "woff", "woff2", "eot",
+          "der"
+      ]>
+      If the <@s>recommendedDefaults</@> setting is 0.9.15 (the minimum), then the list is this: <#list binaryExtsV1?sort as ext><@c>${ext}</@><#sep>, </#list>.
+      If the <@s>recommendedDefaults</@> setting is 0.9.16 or greater, then the list is this: <#list (binaryExtsV1 + binaryExtsV2Added)?sort as ext><@c>${ext}</@><#sep>, </#list>.
   <li>Otherwise it chooses the "execute" processing mode.
 </ul>
 <p>The <@s>modes</@s> setting is a list of TDD functions, where the function name is either <@c>execute</@>, <@c>copy</@>, <@c>renderXml</@c>, or <@c>ignore</@>. The arguments to the functions are one or more path patterns of virtual paths in the source file system. For example this (in a configuration file):</p>
@@ -152,7 +170,7 @@ modes: [
 
 <p>With these settings you can insert a header before templates, and insert a footer after templates (templates = files processed in "execute" processing mode). The insertion of header and footer happens only in the memory of the computer, and does not modify the source files. This can be used to add common headers and footers to the templates without actually typing them again and again. Also, you can change the header/footer of many templates at once.</p>
 
-<p>The intent of headers and footers is not to show something at the top and bottom of pages. Rather it is to insert FTL directives that import or include commonly used macros, or to place the page inside a directive block, as <@c>&lt;#escape <@r>...</@r>><@r>...</@r>&lt;/#escape></@c>. For concrete examples please see <@example 'border' />.</p>
+<p>The intent of headers and footers is not to show something at the top and bottom of pages. Rather it is to insert FTL directives that import or include commonly used macros, or to place the page inside a block, as <@c>&lt;@myLayout><@r>...</@r>&lt;/myLayout></@c>. For concrete examples please see <@example 'border' />.</p>
 
 <@note>Unfortunately the inserted header displace the error locations (column, row) in the error messages (I can't fix it in FMPP; FreeMarker improvements are needed to address this). However, if the header doesn't contain line-break, then this unwanted effect is limited to the first line of the template. So it's strongly recommended to not use line-break in headers.</@note>
 
@@ -161,7 +179,7 @@ modes: [
 <p>There is a single setting to build both sequences at once: <@s>borders</@s>. You give a sequence of <@c>header</@>, <@c> footer</@> and <@c>border</@> functions in it. The first argument to <@c>header</@> and <@c> footer</@> functions is the text of header and footer respectively, and the further arguments are the path patterns of virtual paths in the source file system. If you omit the path patterns, that's the same as if you give <@c>**</@c> (i.e. match all files). <@c>border</@> is convenience function: <@c>border(<@r>a</@>, <@r>b</@>, <@r>paths...</@>)</@> is equivalent with <@c>header(<@r>a</@>, <@r>paths...</@>), footer(<@r>b</@>, <@r>paths...</@>)</@>. Example:</p>
 <@prg><#noparse>
 header("<#import '/lib/css.ftl' as css>", **/*.css)
-border("<#escape x as x?html>", "</#escape>", **/*.html, **/*.htm)
+border("<#import '/lib/page.ftl' as p><@p.myLayout>", "</@p.myLayout>", **/*.html, **/*.htm)
 </#noparse></@prg>
 <p>This build these sequences:</p>
 <ul>
@@ -169,15 +187,15 @@ border("<#escape x as x?html>", "</#escape>", **/*.html, **/*.htm)
   <table border=1 cellspacing=0 cellpadding=4>
     <tr><th>Path pattern<th>Header
     <tr><td><@c>**/*.css</@><td><@c>&lt;#import '/lib/css.ftl' as c></@>
-    <tr><td><@c>**/*.html</@><td><@c>&lt;#escape x as x?html></@>
-    <tr><td><@c>**/*.htm</@><td><@c>&lt;#escape x as x?html></@>
+    <tr><td><@c>**/*.html</@><td><@c>&lt;#import '/lib/page.ftl' as p>&lt;@p.myLayout></@>
+    <tr><td><@c>**/*.htm</@><td><@c>&lt;#import '/lib/page.ftl' as p>&lt;@p.myLayout></@>
   </table>
   </li>
   <li>Footer chooser sequence:
   <table border=1 cellspacing=0 cellpadding=4>
     <tr><th>Path pattern<th>Footer
-    <tr><td><@c>**/*.html</@><td><@c>&lt;/#escape></@>
-    <tr><td><@c>**/*.htm</@><td><@c>&lt;/#escape></@>
+    <tr><td><@c>**/*.html</@><td><@c>&lt;/@p.myLayout></@>
+    <tr><td><@c>**/*.htm</@><td><@c>&lt;/@p.myLayout></@>
   </table>
   </li>
 </ul>
@@ -190,10 +208,10 @@ header("<#import '/lib/common.ftl' as c>", **/*.css, **/*.html, **/*.htm),
 layer()
 # The 2nd layer starts here
 header("<#import '/lib/css.ftl' as css>", **/*.css),
-border("<#escape x as x?html>", "</#escape>", **/*.html, **/*.htm)
+border("<#import '/lib/page.ftl' as p><@p.myLayout>", "</@p.myLayout>", **/*.html, **/*.htm)
 </#noparse></@prg>
 
-<p>Here we have two independent header chooser sequences, so both CSS and HTLM files will import <@c>lib/common.ftl</@c>, and in additional CSS files will import <@c>lib/css.ftl</@c>, and HTML files will use an escape block. You can have any number of layers.</p>
+<p>Here we have two independent header chooser sequences, so both CSS and HTLM files will import <@c>lib/common.ftl</@c>, and additionally CSS files will import <@c>lib/css.ftl</@c>, and HTML files will import <@c>lib/page.ftl</@c> have the <@c>@p.myLayout</@> block. You can have any number of layers.</p>
 
 <p>A header chosen from an earlier layer will be used earlier in the template file than headers chosen from later layers. A footer chosen from an earlier layer will be used later in the template file than footers chosen  from later layers. For example:</p>
 
@@ -220,25 +238,28 @@ L1(L2{L3[content]L3}L2)L1
 <@setting name="removeExtensions" type="sequence (of strings)" default="ex:empty"  clShort="R" merging=true />
 <@setting name="removePostfixes" type="sequence (of strings)" default="ex:empty" merging=true />
 <@setting name="replaceExtensions" type="sequence (of strings)" default="ex:empty" merging=true />
+<@setting name="removeFreemarkerExtensions" type="boolean" default={'0.9.15': 'false', '0.9.15': 'true'} merging=false since='0.9.16' />
 
-<p>Initially the name of the output file is the same as the name of the source file. These two settings allow you to change the output filename somewhat, be removing parts of source file name.
+<p>Initially the name of the output file is the same as the name of the source file. These settings allow you to change the output filename somewhat, by removing and replacing parts of it.
 
 <p>The precise meaning of the settings:</p>
-<ul>
-  <li><@s>removeExtensions</@s>: If the source file name ends with an exension in this sequence, then it will be removed from the output file name. For example, if <@c>t</@> is in the sequence (note that there is no dot before the <@c>t</@c>), then the output file for <@c>example.html.t</@> will be <@c>example.html</@>. The extension to remove can contain dots (as <@c>tar.gz</@>).</li>
+<ol>
+  <li><@s>removeExtensions</@s>: If the source file name ends with an exension in this sequence, then it will be removed from the output file name. For example, if <@c>ftl</@> is in the sequence (note that there is no dot before the <@c>ftl</@c>), then the output file for <@c>example.html.ftl</@> will be <@c>example.html</@>. The extension to remove can contain dots (as <@c>tar.gz</@>).</li>
   
   <li><@s>removePostfixes</@s>: If the source file name before the first dot ends with a string in this sequence, then it will be removed from the output file name. For example, if <@c>_t</@> is in the sequence, then the output file for <@c>example_t.html</@> will be <@c>example.html</@>. If the file name does not contains dot, then it still works: <@c>example_t</@> will become to <@c>example</@c>.</li>
   
   <li><@s>replaceExtensions</@s>: This sequence is used to replace the file extensions with another extensions. For example, if the sequence is this:<br>
-  <@c>ftl, html, xftl, xml</@><br>
-  then the <@c>ftl</@> extension will be replaced with <@c>html</@> (i.e. the output file name for source file <@c>foo.ftl</@> will be <@c>foo.html</@>), and the <@c>xftl</@> extension will be replaced with <@c>xml</@>. The 1st, 3rd, 5th, etc. sequence elements are the old extensions, and the 2nd, 4th, 6th, etc. sequence elements are the new extensions, so <@c>html</@> extension will not be replaced with <@c>xftl</@>. Also, only one extension replacement will occur for the same file name, so in the case of<br>
+  <@c>ftlh, html, ftlx, xml</@><br>
+  then the <@c>ftlh</@> extension will be replaced with <@c>html</@> (i.e. the output file name for source file <@c>foo.ftlh</@> will be <@c>foo.html</@>), and the <@c>ftlx</@> extension will be replaced with <@c>xml</@>. The 1st, 3rd, 5th, etc. sequence elements are the extensions to replace, and the 2nd, 4th, 6th, etc. sequence elements are the new extensions (so <@c>html</@> extension will not be replaced with <@c>ftlx</@>). Also, only one extension replacement will occur for the same file name, so in the case of<br>
   <@c>x, y, y, z</@><br>
   <@c>x</@> will not become to <@c>z</@>.</li>
 
-</ul>
-<p>The settings are applied in the order as they appear above. Each setting is applied only once on the same file name.
+  <li><@s>removeFreemarkerExtensions</@s>: When set to <@c>true</@>, and the file extension is one of the standard FreeMarker template file extensions (<@c>ftl</@>, <@c>ftlh</@>, and <@c>ftlx</@>) then the file extension is removed from the output file name. The typical usage is that you have file names like <@c>foo.txt.ftl</@> or <@c>bar.html.ftlh</@>, and then the output file names will be <@c>foo.txt</@> and <@c>bar.html</@> respectively. You could achieve the same with <@s>removeExtensions</@s> too, but this is more convenient, and most importantly, if <@s>recommendedDefaults</@> is set to at least 0.9.16, this defaults to <@c>true</@>.</li>
+  
+</ol>
+<p>These settings are applied in the order as they are listed above. Each setting is applied only once on the same file name.
 
-<p>Note that output file name deduction is only apply to files, not to directories.</p>
+<p>Note that output file name deduction only applies to files, not to directories.</p>
 
 </@sect>
 
@@ -254,7 +275,7 @@ L1(L2{L3[content]L3}L2)L1
 </ul>
 <p>If the output does not exist, the source file will be always processed.<p>
 
-<p>This feature will not work for templates that rename or drop the original output file during the template execution, since FMPP will believe in the next processing session that the output file for those files is missing, and thus it will process them again.</p>
+<p>This feature will not work for templates that rename or drop the original output file during the template execution, because in the next processing session FMPP will believe that the output files for those files are missing, and thus it will process them again.</p>
 
 </@sect>
 
@@ -264,7 +285,7 @@ L1(L2{L3[content]L3}L2)L1
 
 <p>When FMPP has to process multiple files in the same processing session (for example, when you process a whole directory), then the order in which the files will be processed, is undefined. This is a problem in certain use cases, where it must be ensured that certain files will be processed later than others. For example, if a page contains the alphabetic index of keywords occur in other pages, then that page must be processed for the last, because the information is collected during the processing of the other pages. This is what turns are about: to guarantee the order of the processing of files.</p>
 
-<p>The processing session is divided up into, so called, turns. Turns are identified with the turn number, which is simply the order of the turn. The session starts with turn 1, then comes turn 2, and then comes turn 3, ...etc. FMPP puts all files that will be processed into exactly one of the turns, based on the turn chooser sequence.</p>
+<p>The processing session is divided up into, so called, turns. Turns are identified with the turn number, which is simply the order of the turn. The session starts with turn 1, then comes turn 2, and then comes turn 3, etc. FMPP puts all files that will be processed into exactly one of the turns, based on the turn chooser sequence.</p>
 
 <p>The turn chooser sequence is a sequence of path-pattern -> turn-number pairs. For each source file, the <@a href="overview.html#virtualPath">virtual path</@a> of the source file is compared with these <@a href="pathpattern.html">path patterns</@a>, and the first pattern of the sequence that matches determines the turn in which the file will be processed. If there is no matching pattern in the sequence for the file, then the file will be processed in turn 1.</p>
 
@@ -372,7 +393,7 @@ localData: [
 ]
 </@prg>
 
-<p>The rule is that the first <@c>case(<@r>...</@r>)</@c> where one of the path patterns matches the source file path, will specify the local data (given as the last parameter), and the further <@c>case(<@r>...</@r>)</@c>-s are ignored. There can be any number of <@c>case(<@r>...</@r>)</@c>-s listed (note that <@c>localData</@c> is a sequence), and a <@c>case(<@r>...</@r>)</@c> can have any number of path patterns (but 0).</p> 
+<p>The rule is that the first <@c>case(<@r>...</@r>)</@c> where one of the path patterns matches the source file path will specify the local data (specified as the last argument), and the further <@c>case(<@r>...</@r>)</@c>-s are ignored. There can be any number of <@c>case(<@r>...</@r>)</@c>-s listed (note that <@c>localData</@c> is a sequence), and a <@c>case(<@r>...</@r>)</@c> can have any number of path patterns (but 0).</p> 
 
 <p>Tricky example: do the same as earlier, but don't override the color if the file name starts with <@c>foo</@c>:</p>
 
@@ -384,7 +405,7 @@ localData: [
 ]
 </@prg>
 
-<p>Assume you want to set variable <@c>author</@c> to <@c>Joe</@c> for all files where the file name contains <@c>_j.</@c>, and to <@c>Amy</@c> for all files contains <@c>_a.</@c>. But, you want to do this independently of the <@c>bgColor</@c> business. In this case you have to use layers:</p>
+<p>Assume that you want to set variable <@c>author</@c> to <@c>Joe</@c> for all files where the file name contains <@c>_j.</@c>, and to <@c>Amy</@c> for all files contains <@c>_a.</@c>. But, you want to do this independently of setting <@c>bgColor</@c>. In this case you have to use layers:</p>
 
 <@prg>
 localData: [
@@ -399,11 +420,11 @@ localData: [
 ]
 </@prg>
 
-<p>The rule is that layers are separated with a <@c>layer()</@c> function call. You can have any number of layers. The <@c>case(<@r>...</@r>)</@c>-list of each layer will be searched for the first match independently. If more layers put the same variable into the data model, the higher layer (earlier layer) wins (hence "layers"). Layers are calculated starting with the lowest layer. Note that to ease setting merging, layers that doesn't contain any <@c>case(<@r>...</@r>)</@c>-s are removed automatically.</p>
+<p>The rule is that layers are separated with a <@c>layer()</@c> function call. You can have any number of layers. The <@c>case(<@r>...</@r>)</@c>-list of each layer will be searched for the first match independently. If more layers put the same variable into the data model, the higher layer (earlier layer) wins (hence "layers"). Layers are calculated starting with the lowest layer. Empty layers are allowed (can be practical when you are using setting merging).</p>
 
 <p>The last parameter of the case can be:</p>
 <ul>
-  <li>Arbitrary TDD hash (as in the examples above). This behaves as the value of the <@s>data</@s> setting, so you can use any number of key-value pairs, and invoke data loaders. The value of hash is calculated at most once per processing session, when it is first needed. For the subsequent file processings where the same <@c>case(<@r>...</@r>)</@c> is choosen, the calculated value is reused, so the data loaders don't re-load the external resources. If the <@c>case(<@r>...</@r>)</@c> is never chosen during the session, the value of the TDD hash is not calculated at all.</li>
+  <li>An arbitrary TDD hash (as in the examples above). This behaves as the value of the <@s>data</@s> setting, so you can use any number of key-value pairs, and invoke data loaders. The value of hash is calculated at most once per processing session, when it is first needed. For the subsequent file processings where the same <@c>case(<@r>...</@r>)</@c> is choosen, the calculated value is reused, so the data loaders don't re-load the external resources. If the <@c>case(<@r>...</@r>)</@c> is never chosen during the session, the value of the TDD hash is not calculated at all.</li>
   
   <li>A TDD function call. The supported functions are:
     <ul>
@@ -421,7 +442,7 @@ localData: [
   <li>A string. In this case the string will be interpreted as BeanShell script that must evaluate to an object that implements <@c>fmpp.LocalDataBuilder</@c>. This let Java programmers to implement custom local data strategies. See <@a href="api/index.html">the API documentation</@a> for more information. (The predefined strategies above are also implemented with this interface internally.)</li>
 </ul>
 
-<p>Finally, let see an example of the usage of the <@c>bsh</@c> function: It will execute a BeanShell script file for each HTML to add local data. For example, the script file for source file <@c>foo/bar.html</@c> should be <@c>foo/bar.html.bsh</@c>. If there is no script for the HTML file, it will not consider that as an error.</p>
+<p>Here's an example of using of the <@c>bsh</@c> function: It will execute a BeanShell script file for each HTML to add local data. For example, the script file for source file <@c>foo/bar.html</@c> should be <@c>foo/bar.html.bsh</@c>. If there is no script for the HTML file, it will not consider that as an error.</p>
 
 <@prg>
 modes: ignore(**/*.bsh)
@@ -445,6 +466,59 @@ return res;
 
 </@sect>
 
+<@sect title="Auto-escaping">
+
+<@setting name="outputFormat" type="string" default='"undefined"' merging=false since="0.9.16" />
+<@setting name="outputFormatsByPath" type="sequence (of case function calls)" default="[]" merging=true since="0.9.16" />
+<@setting name="mapCommonExtensionsToOutputFormats" type="boolean" default={'0.9.15': 'false', '0.9.16': 'true'} merging=false since="0.9.16" />
+
+<p>Auto-escaping means that in values printed with interpolations (with <@c>${'$'}{<@r>expression</@>}</@>, not with <@c>&lt;@directive /></@>, nor with static text), the parts that have special meaning in the output format (like <@c>&amp;</@> and <@c>&lt;</@> have if the output format is HTML) are replaced with an escaped form (with <@c>&amp;amp;</@c>, <@c>&amp;lt;</@c> in this case).
+What patterns will be escaped and how depends on the output format, like <@c>HTML</@>, <@c>XML</@>, <@c>RTF</@>, etc.
+
+<p>Output formats and auto-escaping is a FreeMarker template language feature. See the <@fma href="dgui_misc_autoescaping.html">related section in the FreeMarker documentation</@> for more details.</p>
+
+<p>In FMPP, the output format of a template is decided as follows, in this order:
+<ol>
+  <li>If the file extension is <@c>ftlh</@> or <@c>ftlx</@>, and the <@s>freemarkerIncompatibleImprovements</@s> setting is at least 2.3.24 (if <@s>recommendedDefaults</@> is at least 0.9.16 then that's true by default), then template files with <@c>ftlh</@> file extension will have <@c>HTML</@> output format, and template files with <@c>ftlx</@> file extension will have <@c>XML</@> output format. This is enforced by FreeMarker, so the FMPP settings below can't override it. (Note that these file extensions can be removed/replaced in the output file names using the <@s>removeExtensions</@>/<@s>replaceExtensions</@> settings.)</li>
+
+  <li>Otherwise, if an entry in <@s>outputFormatsByPath</@> matches the template file path (see later), then the output format specified there is used.</li>
+  
+  <li>Otherwise, if <@s>mapCommonExtensionsToOutputFormats</@> is <@c>true</@> (if <@s>recommendedDefaults</@> is at least 0.9.16 then that's true by default), and the template file extension (the part of the file name after the last dot, always case-insensitive) is one of the common extensions (see them later), then the output format associated with that extension is used. Furthermore, if the file name ends with <@c>.ftl</@> (always case-insensitive), then we ignore that ending, so for example for <@c>example.rtf.ftl</@> we check if <@c>rtf</@> is a common extension, not if <@c>ftl</@> is one.</li>
+  
+  <li>Otherwise, if the <@s>outputFormat</@> setting is set, then the output format specified there is used.</li>
+
+  <li>Otherwise, the output format will be the one called <@c>"undefined"</@>, which doesn't do automatic escaping.
+</ol>
+
+<p>Example:</p>
+
+<@prg>
+outputFormat: HTML
+
+outputFormatsByPath: [
+  case(legacy/, undefined)
+  case(**/*.xfoo, **/*.xbar, XML)
+]
+</@prg>
+
+<p>With this all templates inside the <@c>legacy</@> directory will have <@c>undefined</@> output format, and template files that have <@c>xfoo</@> or <@c>xbar</@> file extension will have <@c>XML</@> output format. The output format is decided by the first matching <@c>case(...)</@>, so for example <@c>legacy/example.xfoo</@> will have <@c>undefined</@> output format, despite that it matches <@c>**/*.xfoo</@>. If there's no match in <@s>outputFormatsByPath</@>, and we assume for simplicity that <@s>mapCommonExtensionsToOutputFormats</@> is <@c>false</@>, then the output format will be <@c>HTML</@> according the <@s>outputFormat</@> setting.</p>
+
+<p>The <@c>case</@> function in <@s>outputFormatsByPath</@> has 2 or more arguments. The last argument is the name of the output format. The arguments before that are the <@a href="pathpattern.html">path patterns</@> that will be matched against the <@a href="overview.html#virtualPath">virtual path</@a> of the template, in logical <q>or</q> relation.</p>
+
+<p>The valid output format names can be found in the <@fma href="dgui_misc_autoescaping.html">FreeMarker documentation</@>.
+
+<p>The common extension used by <@s>mapCommonExtensionsToOutputFormats</@> are the following (in this format: <q>Associated output format: case-insensitive file extensions</q>):</p>
+<ul>
+  <#-- ATTENTION: If you edit this, also update the fmpp.Engine#setMapCommonExtensionsToOutputFormats API JavaDoc! -->
+  <li>HTML output format: <@c>html</@>, <@c>htm</@></li>
+  <li>XHTML output format: <@c>xhtml</@>, <@c>xhtm</@>, <@c>xht</@></li>
+  <li>XML output format: <@c>xml</@>, <@c>xsd</@>, <@c>xsl</@>, <@c>xslt</@>, <@c>svg</@>, <@c>wsdl</@>,
+      <@c>dita</@>, <@c>ditamap</@></li>
+  <li>RTF output format: <@c>rtf</@></li>
+  <#-- ATTENTION: If you edit this, also update the fmpp.Engine#setMapCommonExtensionsToOutputFormats API JavaDoc! -->
+</ul>
+
+</@sect>
 
 <@sect title="Locale">
 <@setting name="locale" type="string (locale)" default="en_US" clShort="A" merging=false />
@@ -544,14 +618,14 @@ return res;
 </@sect>
 
 <@sect title="Boolean format">
-<@setting name="booleanFormat" type="string" default="true,false" merging=false />
+<@setting name="booleanFormat" type="string" default="true,false" merging=false since='0.9.15' />
 
-<p>This setting specifies how boolean values will be converted to text or from text inside FreeMarker templates (not in <@a href="dataloader.html">data loaders</@a>). Note that by default doing something like <@c>${'$'}{myBoolean}</@c> is an error, because FreeMarker denies using <@c>"true,false"</@c> for implicit boolean to text conversion; write <@c>${'$'}{myBoolean?c}</@c> where you want <@c>true</@> and <@c>false</@> as is in the output.</p>
+<p>This setting specifies how boolean values will be converted to text or from text inside FreeMarker templates (not in <@a href="dataloader.html">data loaders</@a>). However, confusingly enough, when this is <@c>true,false</@> (the default) then something like <@c>${'$'}{myBoolean}</@c> is an error, because FreeMarker denies using <@c>"true,false"</@c> for implicit boolean to text conversion. So to utilize this setting, set it to something different, like <@c>Y,N</@c>, and then it will work as expected. Where you want to print <@c>true</@>/<@c>false</@>, write <@c>${'$'}{myBoolean?c}</@c> (note the <@c>?c</@>), which will always print <@c>true</@>/<@c>false</@>, regardless of the <@s>booleanFormat</@> setting.</p>
 
 <p>This setting directly correspond to the FreeMarker setting with similar name, so find the full documentation there:
 <@fma "ref_directive_setting.html#topic_date_format_settings">FreeMarker settings</@fma>.</p>
 
-<p>Example: <@c>"Yes,No"</@> means that <@c>${'$'}{myBoolean?c}</@c> will print <@c>Yes</@c> or <@c>No</@c>.
+<p>Example: <@c>"Yes,No"</@> means that <@c>${'$'}{myBoolean}</@c> will print <@c>Yes</@c> or <@c>No</@c>.
 
 </@sect>
 
@@ -561,7 +635,7 @@ return res;
 <@setting name="timeFormat" type="string" default="" merging=false />
 <@setting name="datetimeFormat" type="string" default="" merging=false />
 <@setting name="timeZone" type="string" default="" merging=false />
-<@setting name="sqlDateAndTimeTimeZone" type="string" default="" merging=false />
+<@setting name="sqlDateAndTimeTimeZone" type="string" default="" merging=false since='0.9.15' />
 
 <p>These settings specify how date/time/date-time values will be converted to text or from text inside FreeMarker templates (not in <@a href="dataloader.html">data loaders</@a>, unless said otherwise).</p>
 
@@ -877,38 +951,67 @@ freemarkerLinks: {
 </@sect>
 
 
-<@sect title='Activating fixes' anchor="freemarkerIncompatibleImprovements">
-<@setting name="freemarkerIncompatibleImprovements" type="string (version number)" default="" merging=false />
- 
-<p>Enables the FreeMarker fixes/improvements that are not 100% backward compatible, and were implemented in the FreeMarker version given in this setting. In older projects using the highest available <@c>2.3.<@r>x</@r></@c> is usually a good compromise. New projects should use the maximum, which is the version of the FreeMarker used. If this setting is not set then FreeMarker chooses the this version itself, which as of this writing will be <@c>2.3.0</@c>.</p>
+<@sect title='Activating fixes/improvements' anchor="freemarkerIncompatibleImprovements">
+<@setting name="recommendedDefaults" type="string (version number)" default="0.9.15" merging=false since='0.9.16' />
+<@setting name="freemarkerIncompatibleImprovements" type="string (version number)" default={ '0.9.15': '2.3.0', '0.9.16': '2.3.28' } merging=false since='0.9.15' />
 
-<p>See <@a href="freemarker/api/freemarker/template/Configuration.html#Configuration-freemarker.template.Version-"><@c>Configuration(Version)</@c> in the FreeMarker API</@a> for what fixes/improvements are activated.</p>
+<p><@s>recommendedDefaults</@> influences the default value of other settings. The setting value defaults will be those recommended as of the specified FMPP version. When you start a new project, set it to the current FMPP version (${pp.version} currently). In older projects changing this setting can break things, so check how the defaults change:
 
-<p>The format of the setting value is <@c><@r>major</@>.<@r>minor</@r>.<@r>micro</@r></@c>, where each part is a positive integer without padding 0-s</p>
+<ul>
+  <#-- ATTENTION: If you edit this, also update the fmpp.Engine#Engine API JavaDoc! -->
+  <li>0.9.15: This is the baseline (and the default)</li>
+  <li>0.9.16: The following defaults change (compared to 0.9.15):
+    <ul>
+      <li><@s>freemarkerIncompatibleImprovements</@> to 2.3.28, thus, among many things, templates with <@c>ftlh</@> and <@c>ftlx</@> file extensions will use <@c>HTML</@> and <@c>XML</@> auto-escaping respectively.</li>
+      <li><@s>mapCommonExtensionsToOutputFormats</@> to <@c>true</@>, thus, templates with common file extensions like <@c>html</@>, <@c>xml</@> etc. will have auto-escaping (legacy escaping, like <@c>#escape</@>, or <@c>?html</@> will fail in them).
+      <li><@s>removeFreemarkerExtensions</@> to <@c>true</@>, thus, the <@c>ftl</@>, <@c>ftlh</@>, and <@c>ftlx</@> file extensions are automatically removed from the output file name.</li>
+      <li><@s>objectWrapper</@> to a <@c>freemarker.template.DefaultObjectWrapper</@c>, if <@s>freemarkerIncompatibleImprovements</@> is at least 2.3.21. There are more details, but it's highly technical, so if you care, <@a href="api/fmpp/Engine.html#Engine-freemarker.template.Version-freemarker.template.Version-freemarker.ext.beans.BeansWrapper-">see the JavaDoc of the <@c>fmpp.Engine</@c> constructor</@a>.</li>
+    </ul>
+  </li>
+  <#-- ATTENTION: If you edit this, also update the fmpp.Engine#Engine API JavaDoc! -->
+</ul>
+
+<p>The lowest allowed <@s>recommendedDefaults</@> value is 0.9.15, and the highest allowed is the version of the FMPP release that you are using.
+
+<p><@s>freemarkerIncompatibleImprovements</@> enables the FreeMarker fixes/improvements that are not 100% backward compatible, and were implemented in the FreeMarker version given in this setting. In older projects using the highest available <@c>2.3.<@r>x</@r></@c> usually works fine, but check what changes <@a href="freemarker/api/freemarker/template/Configuration.html#Configuration-freemarker.template.Version-">in the documentation</@>. New projects should definitely use the maximum, which is the version of the FreeMarker used (<@c>fmpp --version</@> will print that, also, the current FMPP version was built with FreeMarker ${pp.freemarkerVersion}). See <@a href="freemarker/api/freemarker/template/Configuration.html#Configuration-freemarker.template.Version-"><@c>Configuration(Version)</@c> in the FreeMarker API</@a> for more information, such as what fixes/improvements are activated.</p>
+
+<p>The format of both these settings is <@c><@r>major</@>.<@r>minor</@r>.<@r>micro</@r></@c>, where each part is a positive integer without padding 0-s.</p>
 
 </@sect>
 
 
 <@sect title="Object wrapping" anchor="objectWrapping">
-<@setting name="objectWrapper" type="string (BeanShell expression)" default='"b = new BeansWrapperBuilder(freemarkerIncompatibleImprovements); b.setSimpleMapWrapper(true); return b.build();"' merging=false />
+<@setting name="objectWrapper" type="string (BeanShell expression)"
+    default={
+        '0.9.15': '"b = new BeansWrapperBuilder(freemarkerIncompatibleImprovements); b.setSimpleMapWrapper(true); return b.build();"',
+        '0.9.16': '"b = new DefaultObjectWrapper(freemarkerIncompatibleImprovements); ...; return b.build(); /* See fmpp.Engine constructor JavaDocs */"'
+    }
+    merging=false
+/>
 
 <p>The <@s>objectWrapper</@s> setting is for FreeMarker "experts" who want to use a customized <@c>ObjectWrapper</@c>. The value of the setting is a BeanShell expression that must result in an object whose class extends the <@c>freemarker.ext.beans.BeansWrapper</@c> class. The value can be a simple expression like <@c>"new com.example.MyWrapper()"</@c>, or multiple instructions ending with a <@c>return</@c> statement.</p>
 
-<p>The <@c>freemarker.template.ObjectWrapper</@c>, <@c>freemarker.ext.beans.BeansWrapper</@c>, and <@c>freemarker.ext.beans.BeansWrapperBuilder</@c> classes are automatically imported, so you don't have to use full-qualified class name for them. Also, a non-<@c>null</@c> <@c>freemarkerIncompatibleImprovements</@c> value is exposed, which corresponds to the effective value of the similarly named FMPP setting.</p>
+<p>The <@c>freemarker.template.ObjectWrapper</@c>, <@c>freemarker.template.DefaultObjectWrapper</@c>, <@c>freemarker.template.DefaultObjectWrapperBuilder</@c>, <@c>freemarker.ext.beans.BeansWrapper</@c>, and <@c>freemarker.ext.beans.BeansWrapperBuilder</@c> classes are automatically imported, so you don't have to use full-qualified class name for them. Also, a non-<@c>null</@c> <@c>freemarkerIncompatibleImprovements</@c> value is exposed, which corresponds to the effective value of the similarly named FMPP setting.</p>
 
 <p>The <@c>ObjectWrapper</@c> is created before other setting values (or the <@c>fmpp.Engine</@c> instance for that mater), so the BeanShell expression has no access to any setting values, except to <@s>freemarkerIncompatibleImprovements</@s>, as it was shown.</p>
 
-<p>A subtle detail regarding the default value: The default value shown is actually only used when <@s>freemarkerIncompatibleImprovements</@s> is at least <@c>2.3.21</@>. Otherwise the default is created directly with old-style <@c>new BeansWrapper()</@>. See the FreeMarker API for the otherwise very subtle difference.</p>
+<p>The default value shown is actually only used when <@s>freemarkerIncompatibleImprovements</@s> is at least <@c>2.3.21</@>. For more information please consult <@a href="api/fmpp/Engine.html#Engine-freemarker.template.Version-freemarker.template.Version-freemarker.ext.beans.BeansWrapper-">the JavaDoc of the <@c>fmpp.Engine</@c> constructor</@a>.</p>
 
 </@sect>
 
 
 <@sect title="Template syntax" anchor="templateSyntax">
-<@setting name="tagSyntax" type="string" default='ex:<@c>angleBracket</@c> with FreeMarker 2.3.x, <@c>autoDetect</@c> with later versions' merging=false />
+<@setting name="tagSyntax" type="string" default='ex:<@c>angleBracket</@c>' merging=false />
 
-<p>The <@s>tagSyntax</@s> setting determines the syntax of the templates (angle bracket syntax like <@c>&lt;#include "foo"></@c> VS square bracket syntax like <@c>[#include "foo"]</@c>) that has no <@c>ftl</@c> directive in it. If the template uses <@c>ftl</@c> directive (like it starts with <@c>&lt;#ftl></@c> or <@c>[#ftl]</@c>), then the syntax of the <@c>ftl</@c> tag determines the syntax of the template, and the <@s>tagSyntax</@s> setting is ignored.</p>
+<p>The <@s>tagSyntax</@s> setting determines the syntax of tags in the templates (angle bracket syntax like <@c>&lt;#include "foo"></@c> VS square bracket syntax like <@c>[#include "foo"]</@c>) that has no <@c>ftl</@c> directive in it. If the template uses <@c>ftl</@c> directive (like it starts with <@c>&lt;#ftl></@c> or <@c>[#ftl]</@c>), then the syntax of the <@c>ftl</@c> tag determines the syntax of the template, and the <@s>tagSyntax</@s> setting is ignored.</p>
 
 <p>The possible values of this setting are <@c>angleBracket</@c>, <@c>squareBracket</@c> and <@c>autoDetect</@c>. The recommended value is <@c>autoDetect</@c>, which will auto-detect the syntax of each template independently, by choosing the syntax of the first FreeMarker tag in the template. For example when it finds a <@c>[@</@c> in the template, it will choose square bracket syntax.</p>
+
+<@setting name="interpolationSyntax" type="string" default='ex:<@c>legacy</@c>' merging=false since="0.9.16" />
+
+<p>The <@s>interpolationSyntax</@> setting determines the syntax of the interpolations (where you insert a value, like <@c><#noparse>${</#noparse><@r>name</@>}</@>) in templates.
+
+<p>The possible values of this setting are <@c>legacy</@c> (like <@c><#noparse>${</#noparse><@r>expression</@>}</@> and the deprecated <@c><#noparse>#{</#noparse><@r>numericExpression</@>}</@>), <@c>dollar</@c> (means <@c><#noparse>${</#noparse><@r>expression</@>}</@> only), and <@c>squareBracket</@c> (like <@c>[=<@r>expression</@>]</@>. The recommended value is <@c>dollar</@c>, unless the <@c><#noparse>${</#noparse></@> pattern clashes with the static parts that you need to generate (like when you generate JSP or shell script), in which case use <@c>squareBracket</@c>. The default is <@c>legacy</@c> (as far as that's the default of FreeMarker).</p>
 
 </@sect>
 

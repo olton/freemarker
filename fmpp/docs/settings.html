@@ -51,19 +51,20 @@ document.createElement('nav');
     <li><a href="#sect10">Skipping unchanged files</a></li>
     <li><a href="#sect11">Turn choosing</a></li>
     <li><a href="#data">Data model building</a></li>
-    <li><a href="#sect15">Locale</a></li>
-    <li><a href="#sect16">Number format</a></li>
-    <li><a href="#sect17">Boolean format</a></li>
-    <li><a href="#sect18">Date/time format</a></li>
-    <li><a href="#sect19">Handling errors</a></li>
-    <li><a href="#sect20">Expert mode</a></li>
-    <li><a href="#sect21">Case sensitive path comparison</a></li>
+    <li><a href="#sect15">Auto-escaping</a></li>
+    <li><a href="#sect16">Locale</a></li>
+    <li><a href="#sect17">Number format</a></li>
+    <li><a href="#sect18">Boolean format</a></li>
+    <li><a href="#sect19">Date/time format</a></li>
+    <li><a href="#sect20">Handling errors</a></li>
+    <li><a href="#sect21">Expert mode</a></li>
+    <li><a href="#sect22">Case sensitive path comparison</a></li>
     <li><a href="#logging">Logging</a></li>
-    <li><a href="#sect23">Showing the progress and other messages</a></li>
+    <li><a href="#sect24">Showing the progress and other messages</a></li>
     <li><a href="#metaSettings">Meta settings</a></li>
     <li><a href="#xml">XML related settings</a></li>
-    <li><a href="#sect30">FreeMarker links (external includes)</a></li>
-    <li><a href="#freemarkerIncompatibleImprovements">Activating fixes</a></li>
+    <li><a href="#sect31">FreeMarker links (external includes)</a></li>
+    <li><a href="#freemarkerIncompatibleImprovements">Activating fixes/improvements</a></li>
     <li><a href="#objectWrapping">Object wrapping</a></li>
     <li><a href="#templateSyntax">Template syntax</a></li>
   </ul>
@@ -89,18 +90,24 @@ document.createElement('nav');
                       <li><a href="#key_ignoreSvnFiles">ignoreSvnFiles</a>
                       <li><a href="#key_ignoreTemporaryFiles">ignoreTemporaryFiles</a>
                       <li><a href="#key_inheritConfiguration">inheritConfiguration</a>
+                      <li><a href="#key_interpolationSyntax">interpolationSyntax</a>
                       <li><a href="#key_localData">localData</a>
                       <li><a href="#key_locale">locale</a>
                       <li><a href="#key_logFile">logFile</a>
+                      <li><a href="#key_mapCommonExtensionsToOutputFormats">mapCommonExtensionsToOutputFormats</a>
                       <li><a href="#key_modes">modes</a>
                       <li><a href="#key_numberFormat">numberFormat</a>
                       <li><a href="#key_objectWrapper">objectWrapper</a>
                       <li><a href="#key_outputEncoding">outputEncoding</a>
                       <li><a href="#key_outputFile">outputFile</a>
+                      <li><a href="#key_outputFormat">outputFormat</a>
+                      <li><a href="#key_outputFormatsByPath">outputFormatsByPath</a>
                       <li><a href="#key_outputRoot">outputRoot</a>
                       <li><a href="#key_printStackTrace">printStackTrace</a>
                       <li><a href="#key_quiet">quiet</a>
+                      <li><a href="#key_recommendedDefaults">recommendedDefaults</a>
                       <li><a href="#key_removeExtensions">removeExtensions</a>
+                      <li><a href="#key_removeFreemarkerExtensions">removeFreemarkerExtensions</a>
                       <li><a href="#key_removePostfixes">removePostfixes</a>
                       <li><a href="#key_replaceExtensions">replaceExtensions</a>
                       <li><a href="#key_skipUnchanged">skipUnchanged</a>
@@ -171,7 +178,8 @@ document.createElement('nav');
   <p>
     <em>Name:</em> <strong>sourceRoot</strong><br>
     <em>Type:</em> string (path)<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
 <em>Command-line short name: </em><code>S</code><br>
 <em>Ant task attribute name alternative: </em><code>srcdir</code><br>
   </p>
@@ -179,7 +187,8 @@ document.createElement('nav');
   <p>
     <em>Name:</em> <strong>outputRoot</strong><br>
     <em>Type:</em> string (path)<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
 <em>Command-line short name: </em><code>O</code><br>
 <em>Ant task attribute name alternative: </em><code>destdir</code><br>
   </p>
@@ -187,13 +196,15 @@ document.createElement('nav');
   <p>
     <em>Name:</em> <strong>dataRoot</strong><br>
     <em>Type:</em> string (path)<br>
-    <em>Default:</em> the value of <code>sourceRoot</code><br>
+      <em>Default:</em>
+the value of <code>sourceRoot</code><br>
   </p>
 <a name="key_alwaysCreateDirectories"></a>
   <p>
     <em>Name:</em> <strong>alwaysCreateDirectories</strong><br>
     <em>Type:</em> boolean<br>
-    <em>Default:</em> <code>false</code><br>
+      <em>Default:</em>
+<code>false</code><br>
 <em>Ant task attribute name alternative: </em><code>alwaysCreateDirs</code><br>
   </p>
 
@@ -216,13 +227,15 @@ document.createElement('nav');
   <p>
     <em>Name:</em> <strong>sources</strong><br>
     <em>Type:</em> sequence (of paths)<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 <a name="key_outputFile"></a>
   <p>
     <em>Name:</em> <strong>outputFile</strong><br>
     <em>Type:</em> string (path)<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
 <em>Command-line short name: </em><code>o</code><br>
   </p>
 
@@ -239,20 +252,23 @@ document.createElement('nav');
   <p>
     <em>Name:</em> <strong>sourceEncoding</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> <code>ISO-8859-1</code><br>
+      <em>Default:</em>
+<code>ISO-8859-1</code><br>
 <em>Command-line short name: </em><code>E</code><br>
   </p>
 <a name="key_outputEncoding"></a>
   <p>
     <em>Name:</em> <strong>outputEncoding</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> <code>source</code><br>
+      <em>Default:</em>
+<code>source</code><br>
   </p>
 <a name="key_urlEscapingCharset"></a>
   <p>
     <em>Name:</em> <strong>urlEscapingCharset</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> <code>output</code><br>
+      <em>Default:</em>
+<code>output</code><br>
   </p>
 
 <p>People use different encodings to store text in binary form, often referred as charsets. Examples of charsets are: <code>ISO-8859-1</code>, <code>ISO-8859-2</code>, <code>CP852</code>, <code>CP1250</code>, <code>Shift_JIS</code>, <code>UTF-8</code>. FMPP internally uses UNICODE everywhere, but when it has to read a text file or write a text file, it must deal with charsets to correctly decode/encode the text.
@@ -274,26 +290,30 @@ To read text files, FMPP uses the source encoding. This is be default ISO-8859-1
   <p>
     <em>Name:</em> <strong>modes</strong><br>
     <em>Type:</em> sequence (of function calls)<br>
-    <em>Default:</em> empty<br>
+      <em>Default:</em>
+empty<br>
 <em>Command-line short name: </em><code>M</code><br>
   </p>
 <a name="key_ignoreCvsFiles"></a>
   <p>
     <em>Name:</em> <strong>ignoreCvsFiles</strong><br>
     <em>Type:</em> boolean<br>
-    <em>Default:</em> <code>true</code><br>
+      <em>Default:</em>
+<code>true</code><br>
   </p>
 <a name="key_ignoreSvnFiles"></a>
   <p>
     <em>Name:</em> <strong>ignoreSvnFiles</strong><br>
     <em>Type:</em> boolean<br>
-    <em>Default:</em> <code>true</code><br>
+      <em>Default:</em>
+<code>true</code><br>
   </p>
 <a name="key_ignoreTemporaryFiles"></a>
   <p>
     <em>Name:</em> <strong>ignoreTemporaryFiles</strong><br>
     <em>Type:</em> boolean<br>
-    <em>Default:</em> <code>true</code><br>
+      <em>Default:</em>
+<code>true</code><br>
   </p>
 
 <p>When FMPP has to process a file, it has to decide how to process that. That is, it has to choose a "processing mode" for the file. The processing mode can be one of:</p>
@@ -309,7 +329,9 @@ To read text files, FMPP uses the source encoding. This is be default ISO-8859-1
 <p>Then, the processing mode is chosen with a sequence of <a href="pathpattern.html">path patterns</a>, which is defined by the <code>modes</code> setting. The first path pattern in the sequence that matches the <a href="overview.html#virtualPath">virtual path</a> of the file, chooses the processing mode. If no matching path were found, then FMPP chooses the processing mode automatically:</p>
 <ul>
   <li>If the file extension after converting to lowercase is <code>xml</code> and the <code><a href="settings.html#key_xmlRenderings">xmlRenderings</a></code> is not an empty sequence, then it chooses the "renderXml" mode.
-  <li>If the file extension after converting to lowercase is one of: <code>ace</code>, <code>arc</code>, <code>arj</code>, <code>avi</code>, <code>bmp</code>, <code>bz</code>, <code>bz2</code>, <code>cab</code>, <code>chm</code>, <code>class</code>, <code>com</code>, <code>dll</code>, <code>doc</code>, <code>exe</code>, <code>fli</code>, <code>gif</code>, <code>gz</code>, <code>ico</code>, <code>jar</code>, <code>jpeg</code>, <code>jpg</code>, <code>lha</code>, <code>lzh</code>, <code>mov</code>, <code>mp3</code>, <code>mpeg</code>, <code>mpg</code>, <code>msi</code>, <code>pcx</code>, <code>pdf</code>, <code>png</code>, <code>ps</code>, <code>rar</code>, <code>swf</code>, <code>tar</code>, <code>taz</code>, <code>tga</code>, <code>tgz</code>, <code>tiff</code>, <code>tz</code>, <code>wav</code>, <code>wma</code>, <code>xls</code>, <code>zip</code>, then it chooses the "copy" processing mode.
+  <li>If the file extension after converting to lowercase is known by FMPP as belonging to a binary format, then it chooses the "copy" processing mode. The list of these file extensions is hard-coded into FMPP.
+      If the <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code> setting is 0.9.15 (the minimum), then the list is this: <code>ace</code>, <code>arc</code>, <code>arj</code>, <code>avi</code>, <code>bmp</code>, <code>bz</code>, <code>bz2</code>, <code>cab</code>, <code>chm</code>, <code>class</code>, <code>com</code>, <code>dll</code>, <code>doc</code>, <code>exe</code>, <code>fli</code>, <code>gif</code>, <code>gz</code>, <code>ico</code>, <code>jar</code>, <code>jpeg</code>, <code>jpg</code>, <code>lha</code>, <code>lzh</code>, <code>mov</code>, <code>mp3</code>, <code>mpeg</code>, <code>mpg</code>, <code>msi</code>, <code>pcx</code>, <code>pdf</code>, <code>png</code>, <code>ps</code>, <code>rar</code>, <code>swf</code>, <code>tar</code>, <code>taz</code>, <code>tga</code>, <code>tgz</code>, <code>tiff</code>, <code>tz</code>, <code>wav</code>, <code>wma</code>, <code>xls</code>, <code>zip</code>.
+      If the <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code> setting is 0.9.16 or greater, then the list is this: <code>3g2</code>, <code>3gp</code>, <code>7z</code>, <code>acc</code>, <code>ace</code>, <code>aif</code>, <code>aiff</code>, <code>apk</code>, <code>arc</code>, <code>arj</code>, <code>avi</code>, <code>bin</code>, <code>bmp</code>, <code>bz</code>, <code>bz2</code>, <code>cab</code>, <code>cda</code>, <code>chm</code>, <code>class</code>, <code>com</code>, <code>deb</code>, <code>der</code>, <code>dll</code>, <code>dmg</code>, <code>doc</code>, <code>docm</code>, <code>docx</code>, <code>dot</code>, <code>dotx</code>, <code>eot</code>, <code>exe</code>, <code>flac</code>, <code>fli</code>, <code>flv</code>, <code>fnt</code>, <code>gif</code>, <code>gz</code>, <code>h264</code>, <code>ico</code>, <code>iso</code>, <code>jar</code>, <code>jpeg</code>, <code>jpg</code>, <code>lha</code>, <code>lzh</code>, <code>m4a</code>, <code>m4v</code>, <code>mkv</code>, <code>mogg</code>, <code>mov</code>, <code>mp3</code>, <code>mp4</code>, <code>mpa</code>, <code>mpeg</code>, <code>mpg</code>, <code>msi</code>, <code>odg</code>, <code>odg</code>, <code>odm</code>, <code>odp</code>, <code>ods</code>, <code>odt</code>, <code>oga</code>, <code>ogg</code>, <code>otf</code>, <code>otg</code>, <code>oth</code>, <code>otp</code>, <code>ots</code>, <code>ott</code>, <code>pcx</code>, <code>pdf</code>, <code>pkg</code>, <code>png</code>, <code>pot</code>, <code>potm</code>, <code>potx</code>, <code>pps</code>, <code>ppt</code>, <code>pptm</code>, <code>pptx</code>, <code>ps</code>, <code>rar</code>, <code>rpm</code>, <code>svgz</code>, <code>swf</code>, <code>swf</code>, <code>sys</code>, <code>tar</code>, <code>taz</code>, <code>tb2</code>, <code>tbz2</code>, <code>tga</code>, <code>tgz</code>, <code>tif</code>, <code>tiff</code>, <code>ttf</code>, <code>txz</code>, <code>tz</code>, <code>vcd</code>, <code>wav</code>, <code>webm</code>, <code>webp</code>, <code>wma</code>, <code>wma</code>, <code>wmv</code>, <code>woff</code>, <code>woff2</code>, <code>xls</code>, <code>xlsm</code>, <code>xlsx</code>, <code>xlt</code>, <code>xltm</code>, <code>xltx</code>, <code>xlw</code>, <code>xz</code>, <code>z</code>, <code>zip</code>.
   <li>Otherwise it chooses the "execute" processing mode.
 </ul>
 <p>The <code>modes</code> setting is a list of TDD functions, where the function name is either <code>execute</code>, <code>copy</code>, <code>renderXml</code>, or <code>ignore</code>. The arguments to the functions are one or more path patterns of virtual paths in the source file system. For example this (in a configuration file):</p>
@@ -340,12 +362,13 @@ To read text files, FMPP uses the source encoding. This is be default ISO-8859-1
   <p>
     <em>Name:</em> <strong>borders</strong><br>
     <em>Type:</em> sequence (of function calls)<br>
-    <em>Default:</em> empty<br>
+      <em>Default:</em>
+empty<br>
   </p>
 
 <p>With these settings you can insert a header before templates, and insert a footer after templates (templates = files processed in "execute" processing mode). The insertion of header and footer happens only in the memory of the computer, and does not modify the source files. This can be used to add common headers and footers to the templates without actually typing them again and again. Also, you can change the header/footer of many templates at once.</p>
 
-<p>The intent of headers and footers is not to show something at the top and bottom of pages. Rather it is to insert FTL directives that import or include commonly used macros, or to place the page inside a directive block, as <code>&lt;#escape <em>...</em>><em>...</em>&lt;/#escape></code>. For concrete examples please see <code><em>&lt;FMPP></em>/docs/examples/border</code>.</p>
+<p>The intent of headers and footers is not to show something at the top and bottom of pages. Rather it is to insert FTL directives that import or include commonly used macros, or to place the page inside a block, as <code>&lt;@myLayout><em>...</em>&lt;/myLayout></code>. For concrete examples please see <code><em>&lt;FMPP></em>/docs/examples/border</code>.</p>
 
 <p><em><strong>Note:</strong> Unfortunately the inserted header displace the error locations (column, row) in the error messages (I can't fix it in FMPP; FreeMarker improvements are needed to address this). However, if the header doesn't contain line-break, then this unwanted effect is limited to the first line of the template. So it's strongly recommended to not use line-break in headers.</em></p>
 
@@ -353,21 +376,21 @@ To read text files, FMPP uses the source encoding. This is be default ISO-8859-1
 
 <p>There is a single setting to build both sequences at once: <code>borders</code>. You give a sequence of <code>header</code>, <code> footer</code> and <code>border</code> functions in it. The first argument to <code>header</code> and <code> footer</code> functions is the text of header and footer respectively, and the further arguments are the path patterns of virtual paths in the source file system. If you omit the path patterns, that's the same as if you give <code>**</code> (i.e. match all files). <code>border</code> is convenience function: <code>border(<em>a</em>, <em>b</em>, <em>paths...</em>)</code> is equivalent with <code>header(<em>a</em>, <em>paths...</em>), footer(<em>b</em>, <em>paths...</em>)</code>. Example:</p>
 <pre>header(&quot;&lt;#import &#39;/lib/css.ftl&#39; as css&gt;&quot;, **/*.css)
-border(&quot;&lt;#escape x as x?html&gt;&quot;, &quot;&lt;/#escape&gt;&quot;, **/*.html, **/*.htm)</pre><p>This build these sequences:</p>
+border(&quot;&lt;#import &#39;/lib/page.ftl&#39; as p&gt;&lt;@p.myLayout&gt;&quot;, &quot;&lt;/@p.myLayout&gt;&quot;, **/*.html, **/*.htm)</pre><p>This build these sequences:</p>
 <ul>
   <li>Header chooser sequence:
   <table border=1 cellspacing=0 cellpadding=4>
     <tr><th>Path pattern<th>Header
     <tr><td><code>**/*.css</code><td><code>&lt;#import '/lib/css.ftl' as c></code>
-    <tr><td><code>**/*.html</code><td><code>&lt;#escape x as x?html></code>
-    <tr><td><code>**/*.htm</code><td><code>&lt;#escape x as x?html></code>
+    <tr><td><code>**/*.html</code><td><code>&lt;#import '/lib/page.ftl' as p>&lt;@p.myLayout></code>
+    <tr><td><code>**/*.htm</code><td><code>&lt;#import '/lib/page.ftl' as p>&lt;@p.myLayout></code>
   </table>
   </li>
   <li>Footer chooser sequence:
   <table border=1 cellspacing=0 cellpadding=4>
     <tr><th>Path pattern<th>Footer
-    <tr><td><code>**/*.html</code><td><code>&lt;/#escape></code>
-    <tr><td><code>**/*.htm</code><td><code>&lt;/#escape></code>
+    <tr><td><code>**/*.html</code><td><code>&lt;/@p.myLayout></code>
+    <tr><td><code>**/*.htm</code><td><code>&lt;/@p.myLayout></code>
   </table>
   </li>
 </ul>
@@ -379,8 +402,8 @@ header(&quot;&lt;#import &#39;/lib/common.ftl&#39; as c&gt;&quot;, **/*.css, **/
 layer()
 # The 2nd layer starts here
 header(&quot;&lt;#import &#39;/lib/css.ftl&#39; as css&gt;&quot;, **/*.css),
-border(&quot;&lt;#escape x as x?html&gt;&quot;, &quot;&lt;/#escape&gt;&quot;, **/*.html, **/*.htm)</pre>
-<p>Here we have two independent header chooser sequences, so both CSS and HTLM files will import <code>lib/common.ftl</code>, and in additional CSS files will import <code>lib/css.ftl</code>, and HTML files will use an escape block. You can have any number of layers.</p>
+border(&quot;&lt;#import &#39;/lib/page.ftl&#39; as p&gt;&lt;@p.myLayout&gt;&quot;, &quot;&lt;/@p.myLayout&gt;&quot;, **/*.html, **/*.htm)</pre>
+<p>Here we have two independent header chooser sequences, so both CSS and HTLM files will import <code>lib/common.ftl</code>, and additionally CSS files will import <code>lib/css.ftl</code>, and HTML files will import <code>lib/page.ftl</code> have the <code>@p.myLayout</code> block. You can have any number of layers.</p>
 
 <p>A header chosen from an earlier layer will be used earlier in the template file than headers chosen from later layers. A footer chosen from an earlier layer will be used later in the template file than footers chosen  from later layers. For example:</p>
 
@@ -402,40 +425,53 @@ border(&quot;&lt;#escape x as x?html&gt;&quot;, &quot;&lt;/#escape&gt;&quot;, **
   <p>
     <em>Name:</em> <strong>removeExtensions</strong><br>
     <em>Type:</em> sequence (of strings)<br>
-    <em>Default:</em> empty<br>
+      <em>Default:</em>
+empty<br>
 <em>Command-line short name: </em><code>R</code><br>
   </p>
 <a name="key_removePostfixes"></a>
   <p>
     <em>Name:</em> <strong>removePostfixes</strong><br>
     <em>Type:</em> sequence (of strings)<br>
-    <em>Default:</em> empty<br>
+      <em>Default:</em>
+empty<br>
   </p>
 <a name="key_replaceExtensions"></a>
   <p>
     <em>Name:</em> <strong>replaceExtensions</strong><br>
     <em>Type:</em> sequence (of strings)<br>
-    <em>Default:</em> empty<br>
+      <em>Default:</em>
+empty<br>
+  </p>
+<a name="key_removeFreemarkerExtensions"></a>
+  <p>
+    <em>Name:</em> <strong>removeFreemarkerExtensions</strong><br>
+    <em>Type:</em> boolean<br>
+      <em>Default        from <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code> 0.9.15:</em>
+<code>true</code><br>
+<em>Since: FMPP 0.9.16</em><br>
   </p>
 
-<p>Initially the name of the output file is the same as the name of the source file. These two settings allow you to change the output filename somewhat, be removing parts of source file name.
+<p>Initially the name of the output file is the same as the name of the source file. These settings allow you to change the output filename somewhat, by removing and replacing parts of it.
 
 <p>The precise meaning of the settings:</p>
-<ul>
-  <li><code>removeExtensions</code>: If the source file name ends with an exension in this sequence, then it will be removed from the output file name. For example, if <code>t</code> is in the sequence (note that there is no dot before the <code>t</code>), then the output file for <code>example.html.t</code> will be <code>example.html</code>. The extension to remove can contain dots (as <code>tar.gz</code>).</li>
+<ol>
+  <li><code>removeExtensions</code>: If the source file name ends with an exension in this sequence, then it will be removed from the output file name. For example, if <code>ftl</code> is in the sequence (note that there is no dot before the <code>ftl</code>), then the output file for <code>example.html.ftl</code> will be <code>example.html</code>. The extension to remove can contain dots (as <code>tar.gz</code>).</li>
   
   <li><code>removePostfixes</code>: If the source file name before the first dot ends with a string in this sequence, then it will be removed from the output file name. For example, if <code>_t</code> is in the sequence, then the output file for <code>example_t.html</code> will be <code>example.html</code>. If the file name does not contains dot, then it still works: <code>example_t</code> will become to <code>example</code>.</li>
   
   <li><code>replaceExtensions</code>: This sequence is used to replace the file extensions with another extensions. For example, if the sequence is this:<br>
-  <code>ftl, html, xftl, xml</code><br>
-  then the <code>ftl</code> extension will be replaced with <code>html</code> (i.e. the output file name for source file <code>foo.ftl</code> will be <code>foo.html</code>), and the <code>xftl</code> extension will be replaced with <code>xml</code>. The 1st, 3rd, 5th, etc. sequence elements are the old extensions, and the 2nd, 4th, 6th, etc. sequence elements are the new extensions, so <code>html</code> extension will not be replaced with <code>xftl</code>. Also, only one extension replacement will occur for the same file name, so in the case of<br>
+  <code>ftlh, html, ftlx, xml</code><br>
+  then the <code>ftlh</code> extension will be replaced with <code>html</code> (i.e. the output file name for source file <code>foo.ftlh</code> will be <code>foo.html</code>), and the <code>ftlx</code> extension will be replaced with <code>xml</code>. The 1st, 3rd, 5th, etc. sequence elements are the extensions to replace, and the 2nd, 4th, 6th, etc. sequence elements are the new extensions (so <code>html</code> extension will not be replaced with <code>ftlx</code>). Also, only one extension replacement will occur for the same file name, so in the case of<br>
   <code>x, y, y, z</code><br>
   <code>x</code> will not become to <code>z</code>.</li>
 
-</ul>
-<p>The settings are applied in the order as they appear above. Each setting is applied only once on the same file name.
+  <li><code>removeFreemarkerExtensions</code>: When set to <code>true</code>, and the file extension is one of the standard FreeMarker template file extensions (<code>ftl</code>, <code>ftlh</code>, and <code>ftlx</code>) then the file extension is removed from the output file name. The typical usage is that you have file names like <code>foo.txt.ftl</code> or <code>bar.html.ftlh</code>, and then the output file names will be <code>foo.txt</code> and <code>bar.html</code> respectively. You could achieve the same with <code>removeExtensions</code> too, but this is more convenient, and most importantly, if <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code> is set to at least 0.9.16, this defaults to <code>true</code>.</li>
+  
+</ol>
+<p>These settings are applied in the order as they are listed above. Each setting is applied only once on the same file name.
 
-<p>Note that output file name deduction is only apply to files, not to directories.</p>
+<p>Note that output file name deduction only applies to files, not to directories.</p>
 
 
 
@@ -445,7 +481,8 @@ border(&quot;&lt;#escape x as x?html&gt;&quot;, &quot;&lt;/#escape&gt;&quot;, **
   <p>
     <em>Name:</em> <strong>skipUnchanged</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> <code>none</code><br>
+      <em>Default:</em>
+<code>none</code><br>
 <em>Command-line short name: </em><code>-U</code><br>
   </p>
 
@@ -457,7 +494,7 @@ border(&quot;&lt;#escape x as x?html&gt;&quot;, &quot;&lt;/#escape&gt;&quot;, **
 </ul>
 <p>If the output does not exist, the source file will be always processed.<p>
 
-<p>This feature will not work for templates that rename or drop the original output file during the template execution, since FMPP will believe in the next processing session that the output file for those files is missing, and thus it will process them again.</p>
+<p>This feature will not work for templates that rename or drop the original output file during the template execution, because in the next processing session FMPP will believe that the output files for those files are missing, and thus it will process them again.</p>
 
 
 
@@ -467,12 +504,13 @@ border(&quot;&lt;#escape x as x?html&gt;&quot;, &quot;&lt;/#escape&gt;&quot;, **
   <p>
     <em>Name:</em> <strong>turns</strong><br>
     <em>Type:</em> sequence (of function calls)<br>
-    <em>Default:</em> empty sequence<br>
+      <em>Default:</em>
+empty sequence<br>
   </p>
 
 <p>When FMPP has to process multiple files in the same processing session (for example, when you process a whole directory), then the order in which the files will be processed, is undefined. This is a problem in certain use cases, where it must be ensured that certain files will be processed later than others. For example, if a page contains the alphabetic index of keywords occur in other pages, then that page must be processed for the last, because the information is collected during the processing of the other pages. This is what turns are about: to guarantee the order of the processing of files.</p>
 
-<p>The processing session is divided up into, so called, turns. Turns are identified with the turn number, which is simply the order of the turn. The session starts with turn 1, then comes turn 2, and then comes turn 3, ...etc. FMPP puts all files that will be processed into exactly one of the turns, based on the turn chooser sequence.</p>
+<p>The processing session is divided up into, so called, turns. Turns are identified with the turn number, which is simply the order of the turn. The session starts with turn 1, then comes turn 2, and then comes turn 3, etc. FMPP puts all files that will be processed into exactly one of the turns, based on the turn chooser sequence.</p>
 
 <p>The turn chooser sequence is a sequence of path-pattern -> turn-number pairs. For each source file, the <a href="overview.html#virtualPath">virtual path</a> of the source file is compared with these <a href="pathpattern.html">path patterns</a>, and the first pattern of the sequence that matches determines the turn in which the file will be processed. If there is no matching pattern in the sequence for the file, then the file will be processed in turn 1.</p>
 
@@ -493,26 +531,29 @@ border(&quot;&lt;#escape x as x?html&gt;&quot;, &quot;&lt;/#escape&gt;&quot;, **
   <p>
     <em>Name:</em> <strong>data</strong><br>
     <em>Type:</em> hash<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
 <em>Command-line short name: </em><code>D</code><br>
   </p>
 <a name="key_localData"></a>
   <p>
     <em>Name:</em> <strong>localData</strong><br>
     <em>Type:</em> sequence<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 <a name="key_templateData"></a>
   <p>
     <em>Name:</em> <strong>templateData</strong><br>
       <em class="warning">Deprecated!</em> Use <code>localData</code> instead.<br>
     <em>Type:</em> string (Java class name)<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 
-<p>As you may <a href="freemarker/dgui_quickstart_basics.html" rel="nofollow">know from the FreeMarker manual</a>, FreeMarker generates the output by merging a template with a data model, and the data model is a hash variable, the root hash. With FMPP terminology, it is usually just referred as "the data". In FMPP, the population of the root hash happens in two places:</p>
+<p>As you may <a href="freemarker/dgui_quickstart_basics.html">know from the FreeMarker manual</a>, FreeMarker generates the output by merging a template with a data model, and the data model is a hash variable, the root hash. With FMPP terminology, it is usually just referred as "the data". In FMPP, the population of the root hash happens in two places:</p>
 <ol>
-  <li>Session level data: Once per processing session, at the very beginning of it (before any file processing is stared), the root hash is filled with variables based on the <code>data</code> setting. This is what happened in the <a href="qtour.html">Quick Tour</a>, when we have loaded the colors and the table of birds. These variables will be constant during the whole session, and visible for all templates. They must not be modified while the processing session is executing, even if you find a technical way to do that. Note that <a href="freemarker/dgui_misc_var.html" rel="nofollow">FreeMarker uses multiple variable layers</a>, so you doesn't modify these variables with <code>&lt;#assign <em>...</em>></code> or <code>&lt;#global <em>...</em>></code>, just hide them for the time of the template execution, which is OK (the effect will not be visible for the files processed later).
+  <li>Session level data: Once per processing session, at the very beginning of it (before any file processing is stared), the root hash is filled with variables based on the <code>data</code> setting. This is what happened in the <a href="qtour.html">Quick Tour</a>, when we have loaded the colors and the table of birds. These variables will be constant during the whole session, and visible for all templates. They must not be modified while the processing session is executing, even if you find a technical way to do that. Note that <a href="freemarker/dgui_misc_var.html">FreeMarker uses multiple variable layers</a>, so you doesn't modify these variables with <code>&lt;#assign <em>...</em>></code> or <code>&lt;#global <em>...</em>></code>, just hide them for the time of the template execution, which is OK (the effect will not be visible for the files processed later).
   
   <li>Local data (file processing level data): For each processed file, just before FMPP starts to proccess the file, some extra variables are put into the root hash that are specific for that file. These variables will be present in the root hash only while that file is being processed (hence "local data"), so the next file processing will start with the original session level data in the root hash again. The local data is built in three steps, in this order:
     <ol>
@@ -583,7 +624,7 @@ localData: [
     case(sub/sky/**, {bgColor: blue})
     case(sub/**, sub2/**, {bgColor: yellow})
 ]</pre>
-<p>The rule is that the first <code>case(<em>...</em>)</code> where one of the path patterns matches the source file path, will specify the local data (given as the last parameter), and the further <code>case(<em>...</em>)</code>-s are ignored. There can be any number of <code>case(<em>...</em>)</code>-s listed (note that <code>localData</code> is a sequence), and a <code>case(<em>...</em>)</code> can have any number of path patterns (but 0).</p> 
+<p>The rule is that the first <code>case(<em>...</em>)</code> where one of the path patterns matches the source file path will specify the local data (specified as the last argument), and the further <code>case(<em>...</em>)</code>-s are ignored. There can be any number of <code>case(<em>...</em>)</code>-s listed (note that <code>localData</code> is a sequence), and a <code>case(<em>...</em>)</code> can have any number of path patterns (but 0).</p> 
 
 <p>Tricky example: do the same as earlier, but don't override the color if the file name starts with <code>foo</code>:</p>
 
@@ -592,7 +633,7 @@ localData: [
     case(sub/sky/**, {bgColor: blue})
     case(sub/**, sub2/**, {bgColor: yellow})
 ]</pre>
-<p>Assume you want to set variable <code>author</code> to <code>Joe</code> for all files where the file name contains <code>_j.</code>, and to <code>Amy</code> for all files contains <code>_a.</code>. But, you want to do this independently of the <code>bgColor</code> business. In this case you have to use layers:</p>
+<p>Assume that you want to set variable <code>author</code> to <code>Joe</code> for all files where the file name contains <code>_j.</code>, and to <code>Amy</code> for all files contains <code>_a.</code>. But, you want to do this independently of setting <code>bgColor</code>. In this case you have to use layers:</p>
 
 <pre>localData: [
     # The 1st (implicit) layer starts here
@@ -604,11 +645,11 @@ localData: [
     case(**/*_j.*, {author: Joe})
     case(**/*_a.*, {author: Amy})
 ]</pre>
-<p>The rule is that layers are separated with a <code>layer()</code> function call. You can have any number of layers. The <code>case(<em>...</em>)</code>-list of each layer will be searched for the first match independently. If more layers put the same variable into the data model, the higher layer (earlier layer) wins (hence "layers"). Layers are calculated starting with the lowest layer. Note that to ease setting merging, layers that doesn't contain any <code>case(<em>...</em>)</code>-s are removed automatically.</p>
+<p>The rule is that layers are separated with a <code>layer()</code> function call. You can have any number of layers. The <code>case(<em>...</em>)</code>-list of each layer will be searched for the first match independently. If more layers put the same variable into the data model, the higher layer (earlier layer) wins (hence "layers"). Layers are calculated starting with the lowest layer. Empty layers are allowed (can be practical when you are using setting merging).</p>
 
 <p>The last parameter of the case can be:</p>
 <ul>
-  <li>Arbitrary TDD hash (as in the examples above). This behaves as the value of the <code>data</code> setting, so you can use any number of key-value pairs, and invoke data loaders. The value of hash is calculated at most once per processing session, when it is first needed. For the subsequent file processings where the same <code>case(<em>...</em>)</code> is choosen, the calculated value is reused, so the data loaders don't re-load the external resources. If the <code>case(<em>...</em>)</code> is never chosen during the session, the value of the TDD hash is not calculated at all.</li>
+  <li>An arbitrary TDD hash (as in the examples above). This behaves as the value of the <code>data</code> setting, so you can use any number of key-value pairs, and invoke data loaders. The value of hash is calculated at most once per processing session, when it is first needed. For the subsequent file processings where the same <code>case(<em>...</em>)</code> is choosen, the calculated value is reused, so the data loaders don't re-load the external resources. If the <code>case(<em>...</em>)</code> is never chosen during the session, the value of the TDD hash is not calculated at all.</li>
   
   <li>A TDD function call. The supported functions are:
     <ul>
@@ -626,7 +667,7 @@ localData: [
   <li>A string. In this case the string will be interpreted as BeanShell script that must evaluate to an object that implements <code>fmpp.LocalDataBuilder</code>. This let Java programmers to implement custom local data strategies. See <a href="api/index.html">the API documentation</a> for more information. (The predefined strategies above are also implemented with this interface internally.)</li>
 </ul>
 
-<p>Finally, let see an example of the usage of the <code>bsh</code> function: It will execute a BeanShell script file for each HTML to add local data. For example, the script file for source file <code>foo/bar.html</code> should be <code>foo/bar.html.bsh</code>. If there is no script for the HTML file, it will not consider that as an error.</p>
+<p>Here's an example of using of the <code>bsh</code> function: It will execute a BeanShell script file for each HTML to add local data. For example, the script file for source file <code>foo/bar.html</code> should be <code>foo/bar.html.bsh</code>. If there is no script for the HTML file, it will not consider that as an error.</p>
 
 <pre>modes: ignore(**/*.bsh)
 localData: [
@@ -643,14 +684,86 @@ return res;</pre>
  
 
 
-
 <a name="sect15"></a>
+     <h2>Auto-escaping</h2>
+
+<a name="key_outputFormat"></a>
+  <p>
+    <em>Name:</em> <strong>outputFormat</strong><br>
+    <em>Type:</em> string<br>
+      <em>Default:</em>
+<code>&quot;undefined&quot;</code><br>
+<em>Since: FMPP 0.9.16</em><br>
+  </p>
+<a name="key_outputFormatsByPath"></a>
+  <p>
+    <em>Name:</em> <strong>outputFormatsByPath</strong><br>
+    <em>Type:</em> sequence (of case function calls)<br>
+      <em>Default:</em>
+<code>[]</code><br>
+<em>Since: FMPP 0.9.16</em><br>
+  </p>
+<a name="key_mapCommonExtensionsToOutputFormats"></a>
+  <p>
+    <em>Name:</em> <strong>mapCommonExtensionsToOutputFormats</strong><br>
+    <em>Type:</em> boolean<br>
+      <em>Default        from <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code> 0.9.15:</em>
+<code>false</code><br>
+      <em>Default        from <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code> 0.9.16:</em>
+<code>true</code><br>
+<em>Since: FMPP 0.9.16</em><br>
+  </p>
+
+<p>Auto-escaping means that in values printed with interpolations (with <code>${<em>expression</em>}</code>, not with <code>&lt;@directive /></code>, nor with static text), the parts that have special meaning in the output format (like <code>&amp;</code> and <code>&lt;</code> have if the output format is HTML) are replaced with an escaped form (with <code>&amp;amp;</code>, <code>&amp;lt;</code> in this case).
+What patterns will be escaped and how depends on the output format, like <code>HTML</code>, <code>XML</code>, <code>RTF</code>, etc.
+
+<p>Output formats and auto-escaping is a FreeMarker template language feature. See the <a href="freemarker/dgui_misc_autoescaping.html">related section in the FreeMarker documentation</a> for more details.</p>
+
+<p>In FMPP, the output format of a template is decided as follows, in this order:
+<ol>
+  <li>If the file extension is <code>ftlh</code> or <code>ftlx</code>, and the <code><a href="settings.html#key_freemarkerIncompatibleImprovements">freemarkerIncompatibleImprovements</a></code> setting is at least 2.3.24 (if <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code> is at least 0.9.16 then that's true by default), then template files with <code>ftlh</code> file extension will have <code>HTML</code> output format, and template files with <code>ftlx</code> file extension will have <code>XML</code> output format. This is enforced by FreeMarker, so the FMPP settings below can't override it. (Note that these file extensions can be removed/replaced in the output file names using the <code><a href="settings.html#key_removeExtensions">removeExtensions</a></code>/<code><a href="settings.html#key_replaceExtensions">replaceExtensions</a></code> settings.)</li>
+
+  <li>Otherwise, if an entry in <code>outputFormatsByPath</code> matches the template file path (see later), then the output format specified there is used.</li>
+  
+  <li>Otherwise, if <code>mapCommonExtensionsToOutputFormats</code> is <code>true</code> (if <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code> is at least 0.9.16 then that's true by default), and the template file extension (the part of the file name after the last dot, always case-insensitive) is one of the common extensions (see them later), then the output format associated with that extension is used. Furthermore, if the file name ends with <code>.ftl</code> (always case-insensitive), then we ignore that ending, so for example for <code>example.rtf.ftl</code> we check if <code>rtf</code> is a common extension, not if <code>ftl</code> is one.</li>
+  
+  <li>Otherwise, if the <code>outputFormat</code> setting is set, then the output format specified there is used.</li>
+
+  <li>Otherwise, the output format will be the one called <code>"undefined"</code>, which doesn't do automatic escaping.
+</ol>
+
+<p>Example:</p>
+
+<pre>outputFormat: HTML
+
+outputFormatsByPath: [
+  case(legacy/, undefined)
+  case(**/*.xfoo, **/*.xbar, XML)
+]</pre>
+<p>With this all templates inside the <code>legacy</code> directory will have <code>undefined</code> output format, and template files that have <code>xfoo</code> or <code>xbar</code> file extension will have <code>XML</code> output format. The output format is decided by the first matching <code>case(...)</code>, so for example <code>legacy/example.xfoo</code> will have <code>undefined</code> output format, despite that it matches <code>**/*.xfoo</code>. If there's no match in <code>outputFormatsByPath</code>, and we assume for simplicity that <code>mapCommonExtensionsToOutputFormats</code> is <code>false</code>, then the output format will be <code>HTML</code> according the <code>outputFormat</code> setting.</p>
+
+<p>The <code>case</code> function in <code>outputFormatsByPath</code> has 2 or more arguments. The last argument is the name of the output format. The arguments before that are the <a href="pathpattern.html">path patterns</a> that will be matched against the <a href="overview.html#virtualPath">virtual path</a> of the template, in logical <q>or</q> relation.</p>
+
+<p>The valid output format names can be found in the <a href="freemarker/dgui_misc_autoescaping.html">FreeMarker documentation</a>.
+
+<p>The common extension used by <code>mapCommonExtensionsToOutputFormats</code> are the following (in this format: <q>Associated output format: case-insensitive file extensions</q>):</p>
+<ul>
+  <li>HTML output format: <code>html</code>, <code>htm</code></li>
+  <li>XHTML output format: <code>xhtml</code>, <code>xhtm</code>, <code>xht</code></li>
+  <li>XML output format: <code>xml</code>, <code>xsd</code>, <code>xsl</code>, <code>xslt</code>, <code>svg</code>, <code>wsdl</code>,
+      <code>dita</code>, <code>ditamap</code></li>
+  <li>RTF output format: <code>rtf</code></li>
+</ul>
+
+
+<a name="sect16"></a>
      <h2>Locale</h2>
 <a name="key_locale"></a>
   <p>
     <em>Name:</em> <strong>locale</strong><br>
     <em>Type:</em> string (locale)<br>
-    <em>Default:</em> <code>en_US</code><br>
+      <em>Default:</em>
+<code>en_US</code><br>
 <em>Command-line short name: </em><code>A</code><br>
   </p>
 
@@ -666,13 +779,14 @@ return res;</pre>
 
 
 
-<a name="sect16"></a>
+<a name="sect17"></a>
      <h2>Number format</h2>
 <a name="key_numberFormat"></a>
   <p>
     <em>Name:</em> <strong>numberFormat</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> <code>0.############</code><br>
+      <em>Default:</em>
+<code>0.############</code><br>
   </p>
 
 <p>This specifies the default format of numbers when FreeMarker has to convert numbers to strings.  For example, if you change this setting to <code>0.00</code> then:</p>
@@ -752,61 +866,69 @@ return res;</pre>
 <!--[END]-->
 
 
-<a name="sect17"></a>
+<a name="sect18"></a>
      <h2>Boolean format</h2>
 <a name="key_booleanFormat"></a>
   <p>
     <em>Name:</em> <strong>booleanFormat</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> <code>true,false</code><br>
+      <em>Default:</em>
+<code>true,false</code><br>
+<em>Since: FMPP 0.9.15</em><br>
   </p>
 
-<p>This setting specifies how boolean values will be converted to text or from text inside FreeMarker templates (not in <a href="dataloader.html">data loaders</a>). Note that by default doing something like <code>${myBoolean}</code> is an error, because FreeMarker denies using <code>"true,false"</code> for implicit boolean to text conversion; write <code>${myBoolean?c}</code> where you want <code>true</code> and <code>false</code> as is in the output.</p>
+<p>This setting specifies how boolean values will be converted to text or from text inside FreeMarker templates (not in <a href="dataloader.html">data loaders</a>). However, confusingly enough, when this is <code>true,false</code> (the default) then something like <code>${myBoolean}</code> is an error, because FreeMarker denies using <code>"true,false"</code> for implicit boolean to text conversion. So to utilize this setting, set it to something different, like <code>Y,N</code>, and then it will work as expected. Where you want to print <code>true</code>/<code>false</code>, write <code>${myBoolean?c}</code> (note the <code>?c</code>), which will always print <code>true</code>/<code>false</code>, regardless of the <code>booleanFormat</code> setting.</p>
 
 <p>This setting directly correspond to the FreeMarker setting with similar name, so find the full documentation there:
-<a href="freemarker/ref_directive_setting.html#topic_date_format_settings" rel="nofollow">FreeMarker settings</a>.</p>
+<a href="freemarker/ref_directive_setting.html#topic_date_format_settings">FreeMarker settings</a>.</p>
 
-<p>Example: <code>"Yes,No"</code> means that <code>${myBoolean?c}</code> will print <code>Yes</code> or <code>No</code>.
+<p>Example: <code>"Yes,No"</code> means that <code>${myBoolean}</code> will print <code>Yes</code> or <code>No</code>.
 
 
 
-<a name="sect18"></a>
+<a name="sect19"></a>
      <h2>Date/time format</h2>
 <a name="key_dateFormat"></a>
   <p>
     <em>Name:</em> <strong>dateFormat</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 <a name="key_timeFormat"></a>
   <p>
     <em>Name:</em> <strong>timeFormat</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 <a name="key_datetimeFormat"></a>
   <p>
     <em>Name:</em> <strong>datetimeFormat</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 <a name="key_timeZone"></a>
   <p>
     <em>Name:</em> <strong>timeZone</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 <a name="key_sqlDateAndTimeTimeZone"></a>
   <p>
     <em>Name:</em> <strong>sqlDateAndTimeTimeZone</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
+<em>Since: FMPP 0.9.15</em><br>
   </p>
 
 <p>These settings specify how date/time/date-time values will be converted to text or from text inside FreeMarker templates (not in <a href="dataloader.html">data loaders</a>, unless said otherwise).</p>
 
 <p>These settings directly correspond to the FreeMarker settings with similar name, so find their full documentation there:
-<a href="freemarker/ref_directive_setting.html#topic_date_format_settings" rel="nofollow">FreeMarker settings</a>.</p>
+<a href="freemarker/ref_directive_setting.html#topic_date_format_settings">FreeMarker settings</a>.</p>
 
 <p>Examples of <code>datetimeFormat</code>-s: <code>"dd.MM.yyyy HH:mm:ss"</code> (where <code>HH</code> means 0-23 hours) or <code>"MM/dd/yyyy hh:mm:ss a"</code> (where <code>a</code> means AM or PM, if the current language is English), <code>"iso"</code> (ISO 8601:2004 format), <code>"xs"</code> (XML Schema format).
 
@@ -815,13 +937,14 @@ return res;</pre>
 <p>When a format setting isn't set, the default format of the current locale (country) will be used, which are specified by the Java installation you run FMPP on. If the <code>timeZone</code> isn't set, the time zone of the host computer will be used (specified by the Operating System).</p>
 
 
-<a name="sect19"></a>
+<a name="sect20"></a>
      <h2>Handling errors</h2>
 <a name="key_stopOnError"></a>
   <p>
     <em>Name:</em> <strong>stopOnError</strong><br>
     <em>Type:</em> boolean<br>
-    <em>Default:</em> <code>true</code><br>
+      <em>Default:</em>
+<code>true</code><br>
 <em>Command-line short name: </em><code>s, c</code><br>
   </p>
 
@@ -831,13 +954,14 @@ return res;</pre>
 
 
 
-<a name="sect20"></a>
+<a name="sect21"></a>
      <h2>Expert mode</h2>
 <a name="key_expert"></a>
   <p>
     <em>Name:</em> <strong>expert</strong><br>
     <em>Type:</em> boolean<br>
-    <em>Default:</em> <code>false</code><br>
+      <em>Default:</em>
+<code>false</code><br>
 <em>Command-line short name: </em><code>x</code><br>
   </p>
 
@@ -846,13 +970,14 @@ return res;</pre>
 <p>Please note that overwriting a file in general is a normal situation for FMPP; no expert mode required to do that.</p>
 
 
-<a name="sect21"></a>
+<a name="sect22"></a>
      <h2>Case sensitive path comparison</h2>
 <a name="key_caseSensitive"></a>
   <p>
     <em>Name:</em> <strong>caseSensitive</strong><br>
     <em>Type:</em> boolean<br>
-    <em>Default:</em> <code>false</code><br>
+      <em>Default:</em>
+<code>false</code><br>
   </p>
 
 <p>This setting tells if FMPP should differentiate upper- and lower-case letters when it compares paths for equality, or when it matches paths to path patterns. Regardless of this setting, FMPP always tries to keep the case of file names (i.e. the output of <code>Foo.txt</code> will be <code>Foo.txt</code>, and not <code>foo.txt</code> or <code>FOO.TXT</code>), as far as the host operating system does not prevent this.</p>
@@ -864,14 +989,16 @@ return res;</pre>
   <p>
     <em>Name:</em> <strong>logFile</strong><br>
     <em>Type:</em> string (path)<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
 <em>Command-line short name: </em><code>L</code><br>
   </p>
 <a name="key_appendLogFile"></a>
   <p>
     <em>Name:</em> <strong>appendLogFile</strong><br>
     <em>Type:</em> boolean<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 
 <p>If these settings are supported or not, depends on the front-end you use. If a setting is not supported, the front-end must silently ignore it.</p>
@@ -884,39 +1011,44 @@ return res;</pre>
 
 
 
-<a name="sect23"></a>
+<a name="sect24"></a>
      <h2>Showing the progress and other messages</h2>
 <a name="key_quiet"></a>
   <p>
     <em>Name:</em> <strong>quiet</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
 <em>Command-line short name: </em><code>q, v, Q</code><br>
   </p>
 <a name="key_echoFormat"></a>
   <p>
     <em>Name:</em> <strong>echoFormat</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
 <em>Command-line short name: </em><code>F</code><br>
   </p>
 <a name="key_columns"></a>
   <p>
     <em>Name:</em> <strong>columns</strong><br>
     <em>Type:</em> integer<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 <a name="key_printStackTrace"></a>
   <p>
     <em>Name:</em> <strong>printStackTrace</strong><br>
     <em>Type:</em> boolean<br>
-    <em>Default:</em> <code>false</code><br>
+      <em>Default:</em>
+<code>false</code><br>
   </p>
 <a name="key_snip"></a>
   <p>
     <em>Name:</em> <strong>snip</strong><br>
     <em>Type:</em> boolean<br>
-    <em>Default:</em> <code>true</code><br>
+      <em>Default:</em>
+<code>true</code><br>
   </p>
 
 <p>If these settings are supported or not, depends on the front-end you use. If a setting is not supported, the front-end must silently ignore it.</p>
@@ -938,13 +1070,15 @@ return res;</pre>
   <p>
     <em>Name:</em> <strong>configurationBase</strong><br>
     <em>Type:</em> string (path)<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 <a name="key_inheritConfiguration"></a>
   <p>
     <em>Name:</em> <strong>inheritConfiguration</strong><br>
     <em>Type:</em> string (path)<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 
 <p>These settings influence the interpretation of the configuration file they are stored in. Although front-ends may support the specification of these settings outside configuration files, with the front-end specific interface, the meta setting specified in this way is used to emulate that the setting is present in the configuration file the front-end loads.</p>
@@ -962,34 +1096,39 @@ return res;</pre>
   <p>
     <em>Name:</em> <strong>xmlCatalogFiles</strong><br>
     <em>Type:</em> sequence (of paths)<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 <a name="key_xmlCatalogPrefer"></a>
   <p>
     <em>Name:</em> <strong>xmlCatalogPrefer</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> <code>public</code><br>
+      <em>Default:</em>
+<code>public</code><br>
   </p>
 <a name="key_validateXml"></a>
   <p>
     <em>Name:</em> <strong>validateXml</strong><br>
     <em>Type:</em> boolean<br>
-    <em>Default:</em> <code>false</code><br>
+      <em>Default:</em>
+<code>false</code><br>
   </p>
 <a name="key_xpathEngine"></a>
   <p>
     <em>Name:</em> <strong>xpathEngine</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> <code>dontSet</code><br>
+      <em>Default:</em>
+<code>dontSet</code><br>
   </p>
 <a name="key_xmlRenderings"></a>
   <p>
     <em>Name:</em> <strong>xmlRenderings</strong><br>
     <em>Type:</em> sequence (of hashes)<br>
-    <em>Default:</em> empty<br>
+      <em>Default:</em>
+empty<br>
   </p>
 
-<a name="sect26"></a>
+<a name="sect27"></a>
      <h3>Catalogs</h3>
 
 <p>Catalog files are (primarily) used to map public identifiers (and system identifiers) to local files. For example, you want to load an XML file that starts with this:</p>
@@ -1009,14 +1148,14 @@ return res;</pre>
 
 
 
-<a name="sect27"></a>
+<a name="sect28"></a>
      <h3>Validation</h3>
 
 <p>The <code>validateXml</code> setting specifies if, by default, XML files are validated (i.e. checked against the DTD) or not. With "by default" I mean that this can be overridden for individual files, as with the <code>validate</code> option of the <a href="dataloader.html#key_xml">xml data loader</a>.</p>
 
 
 
-<a name="sect28"></a>
+<a name="sect29"></a>
      <h3>XPath engine</h3>
 
 <p>The <code>xpathEngine</code> setting specifies which XPath engine will FreeMarker use when you access XML data (see <a href="dataloader.html#key_xml">XML dataloader</a>). This setting accepts these values:</p>
@@ -1093,13 +1232,14 @@ return res;</pre>
 
 
 
-<a name="sect30"></a>
+<a name="sect31"></a>
      <h2>FreeMarker links (external includes)</h2>
 <a name="key_freemarkerLinks"></a>
   <p>
     <em>Name:</em> <strong>freemarkerLinks</strong><br>
     <em>Type:</em> hash (of sequence of paths)<br>
-    <em>Default:</em> No default value<br>
+      <em>Default:</em>
+No default value<br>
   </p>
 
 <p>FreeMarker links is a dirty hack to satisfy a frequent demand: <code>&lt;#include ...></code>/<code>&lt;#import ...></code> files that are outside the source root directory, as common FTL macro libraries used in multiple projects.</p>
@@ -1176,19 +1316,45 @@ freemarkerLinks: {
 
 
 <a name="freemarkerIncompatibleImprovements"></a>
-     <h2>Activating fixes</h2>
+     <h2>Activating fixes/improvements</h2>
+<a name="key_recommendedDefaults"></a>
+  <p>
+    <em>Name:</em> <strong>recommendedDefaults</strong><br>
+    <em>Type:</em> string (version number)<br>
+      <em>Default:</em>
+<code>0.9.15</code><br>
+<em>Since: FMPP 0.9.16</em><br>
+  </p>
 <a name="key_freemarkerIncompatibleImprovements"></a>
   <p>
     <em>Name:</em> <strong>freemarkerIncompatibleImprovements</strong><br>
     <em>Type:</em> string (version number)<br>
-    <em>Default:</em> No default value<br>
+      <em>Default        from <code>recommendedDefaults</code> 0.9.15:</em>
+<code>2.3.0</code><br>
+      <em>Default        from <code>recommendedDefaults</code> 0.9.16:</em>
+<code>2.3.28</code><br>
+<em>Since: FMPP 0.9.15</em><br>
   </p>
- 
-<p>Enables the FreeMarker fixes/improvements that are not 100% backward compatible, and were implemented in the FreeMarker version given in this setting. In older projects using the highest available <code>2.3.<em>x</em></code> is usually a good compromise. New projects should use the maximum, which is the version of the FreeMarker used. If this setting is not set then FreeMarker chooses the this version itself, which as of this writing will be <code>2.3.0</code>.</p>
 
-<p>See <a href="freemarker/api/freemarker/template/Configuration.html#Configuration-freemarker.template.Version-"><code>Configuration(Version)</code> in the FreeMarker API</a> for what fixes/improvements are activated.</p>
+<p><code>recommendedDefaults</code> influences the default value of other settings. The setting value defaults will be those recommended as of the specified FMPP version. When you start a new project, set it to the current FMPP version (0.9.16 currently). In older projects changing this setting can break things, so check how the defaults change:
 
-<p>The format of the setting value is <code><em>major</em>.<em>minor</em>.<em>micro</em></code>, where each part is a positive integer without padding 0-s</p>
+<ul>
+  <li>0.9.15: This is the baseline (and the default)</li>
+  <li>0.9.16: The following defaults change (compared to 0.9.15):
+    <ul>
+      <li><code>freemarkerIncompatibleImprovements</code> to 2.3.28, thus, among many things, templates with <code>ftlh</code> and <code>ftlx</code> file extensions will use <code>HTML</code> and <code>XML</code> auto-escaping respectively.</li>
+      <li><code><a href="settings.html#key_mapCommonExtensionsToOutputFormats">mapCommonExtensionsToOutputFormats</a></code> to <code>true</code>, thus, templates with common file extensions like <code>html</code>, <code>xml</code> etc. will have auto-escaping (legacy escaping, like <code>#escape</code>, or <code>?html</code> will fail in them).
+      <li><code><a href="settings.html#key_removeFreemarkerExtensions">removeFreemarkerExtensions</a></code> to <code>true</code>, thus, the <code>ftl</code>, <code>ftlh</code>, and <code>ftlx</code> file extensions are automatically removed from the output file name.</li>
+      <li><code><a href="settings.html#key_objectWrapper">objectWrapper</a></code> to a <code>freemarker.template.DefaultObjectWrapper</code>, if <code>freemarkerIncompatibleImprovements</code> is at least 2.3.21. There are more details, but it's highly technical, so if you care, <a href="api/fmpp/Engine.html#Engine-freemarker.template.Version-freemarker.template.Version-freemarker.ext.beans.BeansWrapper-">see the JavaDoc of the <code>fmpp.Engine</code> constructor</a>.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>The lowest allowed <code>recommendedDefaults</code> value is 0.9.15, and the highest allowed is the version of the FMPP release that you are using.
+
+<p><code>freemarkerIncompatibleImprovements</code> enables the FreeMarker fixes/improvements that are not 100% backward compatible, and were implemented in the FreeMarker version given in this setting. In older projects using the highest available <code>2.3.<em>x</em></code> usually works fine, but check what changes <a href="freemarker/api/freemarker/template/Configuration.html#Configuration-freemarker.template.Version-">in the documentation</a>. New projects should definitely use the maximum, which is the version of the FreeMarker used (<code>fmpp --version</code> will print that, also, the current FMPP version was built with FreeMarker 2.3.28). See <a href="freemarker/api/freemarker/template/Configuration.html#Configuration-freemarker.template.Version-"><code>Configuration(Version)</code> in the FreeMarker API</a> for more information, such as what fixes/improvements are activated.</p>
+
+<p>The format of both these settings is <code><em>major</em>.<em>minor</em>.<em>micro</em></code>, where each part is a positive integer without padding 0-s.</p>
 
 
 
@@ -1198,16 +1364,19 @@ freemarkerLinks: {
   <p>
     <em>Name:</em> <strong>objectWrapper</strong><br>
     <em>Type:</em> string (BeanShell expression)<br>
-    <em>Default:</em> <code>&quot;b = new BeansWrapperBuilder(freemarkerIncompatibleImprovements); b.setSimpleMapWrapper(true); return b.build();&quot;</code><br>
+      <em>Default        from <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code> 0.9.15:</em>
+<code>&quot;b = new BeansWrapperBuilder(freemarkerIncompatibleImprovements); b.setSimpleMapWrapper(true); return b.build();&quot;</code><br>
+      <em>Default        from <code><a href="settings.html#key_recommendedDefaults">recommendedDefaults</a></code> 0.9.16:</em>
+<code>&quot;b = new DefaultObjectWrapper(freemarkerIncompatibleImprovements); ...; return b.build(); /* See fmpp.Engine constructor JavaDocs */&quot;</code><br>
   </p>
 
 <p>The <code>objectWrapper</code> setting is for FreeMarker "experts" who want to use a customized <code>ObjectWrapper</code>. The value of the setting is a BeanShell expression that must result in an object whose class extends the <code>freemarker.ext.beans.BeansWrapper</code> class. The value can be a simple expression like <code>"new com.example.MyWrapper()"</code>, or multiple instructions ending with a <code>return</code> statement.</p>
 
-<p>The <code>freemarker.template.ObjectWrapper</code>, <code>freemarker.ext.beans.BeansWrapper</code>, and <code>freemarker.ext.beans.BeansWrapperBuilder</code> classes are automatically imported, so you don't have to use full-qualified class name for them. Also, a non-<code>null</code> <code>freemarkerIncompatibleImprovements</code> value is exposed, which corresponds to the effective value of the similarly named FMPP setting.</p>
+<p>The <code>freemarker.template.ObjectWrapper</code>, <code>freemarker.template.DefaultObjectWrapper</code>, <code>freemarker.template.DefaultObjectWrapperBuilder</code>, <code>freemarker.ext.beans.BeansWrapper</code>, and <code>freemarker.ext.beans.BeansWrapperBuilder</code> classes are automatically imported, so you don't have to use full-qualified class name for them. Also, a non-<code>null</code> <code>freemarkerIncompatibleImprovements</code> value is exposed, which corresponds to the effective value of the similarly named FMPP setting.</p>
 
 <p>The <code>ObjectWrapper</code> is created before other setting values (or the <code>fmpp.Engine</code> instance for that mater), so the BeanShell expression has no access to any setting values, except to <code><a href="settings.html#key_freemarkerIncompatibleImprovements">freemarkerIncompatibleImprovements</a></code>, as it was shown.</p>
 
-<p>A subtle detail regarding the default value: The default value shown is actually only used when <code><a href="settings.html#key_freemarkerIncompatibleImprovements">freemarkerIncompatibleImprovements</a></code> is at least <code>2.3.21</code>. Otherwise the default is created directly with old-style <code>new BeansWrapper()</code>. See the FreeMarker API for the otherwise very subtle difference.</p>
+<p>The default value shown is actually only used when <code><a href="settings.html#key_freemarkerIncompatibleImprovements">freemarkerIncompatibleImprovements</a></code> is at least <code>2.3.21</code>. For more information please consult <a href="api/fmpp/Engine.html#Engine-freemarker.template.Version-freemarker.template.Version-freemarker.ext.beans.BeansWrapper-">the JavaDoc of the <code>fmpp.Engine</code> constructor</a>.</p>
 
 
 
@@ -1217,12 +1386,26 @@ freemarkerLinks: {
   <p>
     <em>Name:</em> <strong>tagSyntax</strong><br>
     <em>Type:</em> string<br>
-    <em>Default:</em> <code>angleBracket</code> with FreeMarker 2.3.x, <code>autoDetect</code> with later versions<br>
+      <em>Default:</em>
+<code>angleBracket</code><br>
   </p>
 
-<p>The <code>tagSyntax</code> setting determines the syntax of the templates (angle bracket syntax like <code>&lt;#include "foo"></code> VS square bracket syntax like <code>[#include "foo"]</code>) that has no <code>ftl</code> directive in it. If the template uses <code>ftl</code> directive (like it starts with <code>&lt;#ftl></code> or <code>[#ftl]</code>), then the syntax of the <code>ftl</code> tag determines the syntax of the template, and the <code>tagSyntax</code> setting is ignored.</p>
+<p>The <code>tagSyntax</code> setting determines the syntax of tags in the templates (angle bracket syntax like <code>&lt;#include "foo"></code> VS square bracket syntax like <code>[#include "foo"]</code>) that has no <code>ftl</code> directive in it. If the template uses <code>ftl</code> directive (like it starts with <code>&lt;#ftl></code> or <code>[#ftl]</code>), then the syntax of the <code>ftl</code> tag determines the syntax of the template, and the <code>tagSyntax</code> setting is ignored.</p>
 
 <p>The possible values of this setting are <code>angleBracket</code>, <code>squareBracket</code> and <code>autoDetect</code>. The recommended value is <code>autoDetect</code>, which will auto-detect the syntax of each template independently, by choosing the syntax of the first FreeMarker tag in the template. For example when it finds a <code>[@</code> in the template, it will choose square bracket syntax.</p>
+
+<a name="key_interpolationSyntax"></a>
+  <p>
+    <em>Name:</em> <strong>interpolationSyntax</strong><br>
+    <em>Type:</em> string<br>
+      <em>Default:</em>
+<code>legacy</code><br>
+<em>Since: FMPP 0.9.16</em><br>
+  </p>
+
+<p>The <code>interpolationSyntax</code> setting determines the syntax of the interpolations (where you insert a value, like <code>${<em>name</em>}</code>) in templates.
+
+<p>The possible values of this setting are <code>legacy</code> (like <code>${<em>expression</em>}</code> and the deprecated <code>#{<em>numericExpression</em>}</code>), <code>dollar</code> (means <code>${<em>expression</em>}</code> only), and <code>squareBracket</code> (like <code>[=<em>expression</em>]</code>. The recommended value is <code>dollar</code>, unless the <code>${</code> pattern clashes with the static parts that you need to generate (like when you generate JSP or shell script), in which case use <code>squareBracket</code>. The default is <code>legacy</code> (as far as that's the default of FreeMarker).</p>
 
 
 
@@ -1241,13 +1424,13 @@ freemarkerLinks: {
 </div>
 <div class="footer-right">
 <div class="generated">
-Generated on <time itemprop="dateModified" datetime="2014-11-04T23:05:28Z" title="November 4, 2014 11:05:28 PM GMT">Nov 4, 2014 11:05 PM GMT</time><br>
-For FMPP version 0.9.15
+Generated on <time itemprop="dateModified" datetime="2018-09-03T21:47:42Z" title="September 3, 2018 9:47:42 PM GMT">Sep 3, 2018 09:47 PM GMT</time><br>
+For FMPP version 0.9.16
 </div>
 <div class="external-links">
 <a href="http://sourceforge.net" rel="nofollow">
 <img src="style/sflogo.png" alt="SourceForge Logo" width="88" height="31"> </a>
-<a href="http://freemarker.org"><img src="style/poweredby_sq_simple.png" alt="Powered by FreeMarker" width="88" height="31"></a> </div>
+<a href="https://freemarker.apache.org/"><img src="style/poweredby_sq_simple.png" alt="Powered by FreeMarker" width="88" height="31"></a> </div>
 </div>
 </div>
 </div>

@@ -258,12 +258,35 @@ public class FileUtil {
     }
 
     /**
+     * Returns the part of the name after the last dot, or if there's no dot, {@code null}.
+     * @param name The file name or path. If {@code null}, {@code null} is returned.
+     * @since 0.9.16
+     */
+    public static String getFileExtension(String name) {
+        if (name == null) {
+            return null;
+        }
+        
+        int dotIdx = name.lastIndexOf('.');
+        return dotIdx != -1 ? name.substring(dotIdx + 1) : null; 
+    }
+    
+    /**
+     * Same as {@link #getFileExtension(String)}, but also converts the result to lower case. 
+     * @since 0.9.16
+     */
+    public static String getLowerCaseFileExtension(String name) {
+        String ext = getFileExtension(name);
+        return ext != null ? ext.toLowerCase() : null;
+    }
+
+    /**
      * Converts UN*X style path to regular expression (originally, for Perl 5 dialect, but also works for Java's
      * dialect).
      * In additional to standard UN*X path meta characters (<code>*</code>,
      * <code>?</code>) it understands <code>**</code>, that is the same as
      * in Ant. It assumes that the paths what you will later match
-     * with the pattern are always starting with slash (they are absoulte paths
+     * with the pattern are always starting with slash (they are absolute paths
      * to an imaginary base).
      */
     public static String pathPatternToPerl5Regex(String text) {

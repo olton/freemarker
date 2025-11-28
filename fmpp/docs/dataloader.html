@@ -254,7 +254,16 @@ tulip;white;6</pre>
     &quot;decided&quot;: false
   }
 ]</pre>  
-  <p>Assuming you have loaded the above JSON into the <code>applicants</code> variable, you could print the name and age of all applicants, and print their skills in nested listing like this:</p>
+  <p>Let's loaded the above JSON array into the <code>applicants</code> data-model variable:</p>
+
+<pre>data: {
+  ...
+  applicants: json(applicants.json)
+  ...
+}  </pre>  
+  <p><em><strong>Note:</strong> Above, the <code>applicants:</code> label is required because this file defines a JSON array, so we need a name with which we can refer to it from the templates. If a JSON file defines a JSON object instead (like <code>{ "applicants": [ <em>...</em> ], "otherStuff": <em>...</em> }</code>), then, if you omit the label, the top-level name-value pairs from the JSON object will be added to the data-model directly.</em></p>
+  
+  <p>Now you could print the name and age of all applicants, and print their skills in nested listing like this:</p>
 
 <pre>&lt;#list applicants as applicant&gt;
   ${applicant.name} (age: ${applicant.age})
@@ -264,9 +273,9 @@ tulip;white;6</pre>
 &lt;/#list&gt;</pre>  
   <p>That is, JSON arrays will be FTL (FreeMarker Template Language) sequences, JSON objects will be FTL hashes, JSON strings will be FTL strings, JSON numbers will be FTL numbers, JSON boolean will be FTL boolean. JSON null-s will be FTL undefined variables (Java <code>null</code>-s), so for <code>applicants[1].maindenName</code> FreeMarker would give an undefined variable error, and you need to write something like <code>applicants[1].maindenName!'N/A'</code> instead.</p>
 
-  <p>The loaded JSON will also act as an FTL node tree (and advanced FreeMarker feature), similarly to an XML. This means, among others, that you can get the parent of a value. The parent of a value is its containing array or object:</p>
+  <p>The loaded JSON will also act as an FTL node tree (an advanced FreeMarker feature), similarly to an XML. This means, among others, that you can get the parent of a value. The parent of a value is its containing array or object:</p>
 
-<pre>&lt;#-- We just pick some skill for the example below: --&gt;
+<pre>&lt;#-- We just pick some skill for this example: --&gt;
 &lt;#assign skill = applicants[0].skills[0]&gt;
 &lt;#-- Now let&#39;s say we only have the skill variable, and we don&#39;t know
      how was it get. We can still get whose skill it was: --&gt;
@@ -279,7 +288,7 @@ ${skill} is the skill of ${skill?parent?parent.name},
     <li>When traversing the tree with <code>&lt;#visit <em>...</em>></code>/<code>&lt;#recurse></code>, or using <code>?children</code>, JSON <code>null</code>-s will appear as existing nodes with <code>?node_type</code> <code>"null"</code> and no FTL type other than node (thus they are unprintable, uncomparable, unlistable, etc.).</li>
   </ul>
 
-<p>See <a href="freemarker/index.html" rel="nofollow">the FreeMarker Manual</a> for more about nodes and the related directives and built-ins!</p>
+<p>See <a href="freemarker/index.html">the FreeMarker Manual</a> for more about nodes and the related directives and built-ins!</p>
 
 
 
@@ -457,7 +466,7 @@ This is the last item.
 
   <p><em><strong>Note:</strong> Sometimes XML files are rather source files (as the HTML-s and the JPG in the <a href="qtour.html">Quick Tour</a>) than data files (as <code>data/birds.tdd</code> in the Quick Tour), just you need to invoke a template to render them to their final form (e.g. to HTML pages). If this is the case, you should use <code>renderXml</code> processing mode (<a href="settings.html#key_modes">see here...</a>), not XML data loader. An example that uses this approach is <code><em>&lt;FMPP></em>/docs/examples/xml_rendering</code>.</em></p>
   
-  <p>Loads an XML file. This uses the built-in XML wrapper of FreeMarker 2.3 and later; please read <a href="freemarker/xgui.html" rel="nofollow">FreeMarker Manual/XML Processing Guide</a> for more information about the usage of the returned variable.</p>
+  <p>Loads an XML file. This uses the built-in XML wrapper of FreeMarker 2.3 and later; please read <a href="freemarker/xgui.html">FreeMarker Manual/XML Processing Guide</a> for more information about the usage of the returned variable.</p>
   
   <p>Notes:</p>
   <ul>
@@ -657,7 +666,7 @@ This is the last item.
      <h3>antProperty</h3>
   <em>Parameters:</em>
       <ol>
-        <li><strong>properyName</strong>: string.
+        <li><strong>propertyName</strong>: string.
           The name of the Ant property.
         <li><strong>defaultValue</strong>: any, optional.
           The value returned if the Ant property does not exist.
@@ -688,11 +697,11 @@ This is the last item.
      <h3>antProperites</h3>
   <em>Parameters:</em>
       <ol>
-        <li><strong>properyName1</strong>: string, optional.
+        <li><strong>propertyName1</strong>: string, optional.
           The name of an Ant property to expose.
-        <li><strong>properyName2</strong>: string, optional.
+        <li><strong>propertyName2</strong>: string, optional.
           The name of another Ant property to expose.
-        <li><strong>properyNameN</strong>: string, optional.
+        <li><strong>propertyNameN</strong>: string, optional.
           ...etc. You can specify any number of Ant parameters.
       </ol>
       
@@ -703,7 +712,7 @@ This is the last item.
 
   <p>If you use this data loader without parameters, then it returns the hash of <strong>all</strong> Ant properties. To see a concrete example, look at <code><em>&lt;FMPP></em>/docs/examples/ant</code>.</p>
 
-  <p>You can also give the name of properties to expose as parameters. For example if you want to put only the Ant properties <code>foo</code> and <code>bar</code> into the shared data model, then you write: <code>antProperties(foo, bar)</code>. Parameters that refer to not existing Ant properties will be silently ignored. The same postfixes (as <code>?n</code>) are supported as with <a href="#key_antProperty"><code>antProperty</code></a>.</p>
+  <p>You can also give the name of properties to expose as parameters. For example if you want to put only the Ant properties <code>foo</code> and <code>bar</code> into the shared data model, then you write: <code>antProperties(foo, bar)</code>. Parameters that refer to non-existing Ant properties will be silently ignored. The same postfixes (as <code>?n</code>) are supported as with <a href="#key_antProperty"><code>antProperty</code></a>.</p>
   
   <p>To see a concrete example, look at <code><em>&lt;FMPP></em>/docs/examples/ant2</code>.</p>
 
@@ -755,13 +764,13 @@ This is the last item.
 </div>
 <div class="footer-right">
 <div class="generated">
-Generated on <time itemprop="dateModified" datetime="2014-11-04T23:05:28Z" title="November 4, 2014 11:05:28 PM GMT">Nov 4, 2014 11:05 PM GMT</time><br>
-For FMPP version 0.9.15
+Generated on <time itemprop="dateModified" datetime="2018-09-03T21:47:42Z" title="September 3, 2018 9:47:42 PM GMT">Sep 3, 2018 09:47 PM GMT</time><br>
+For FMPP version 0.9.16
 </div>
 <div class="external-links">
 <a href="http://sourceforge.net" rel="nofollow">
 <img src="style/sflogo.png" alt="SourceForge Logo" width="88" height="31"> </a>
-<a href="http://freemarker.org"><img src="style/poweredby_sq_simple.png" alt="Powered by FreeMarker" width="88" height="31"></a> </div>
+<a href="https://freemarker.apache.org/"><img src="style/poweredby_sq_simple.png" alt="Powered by FreeMarker" width="88" height="31"></a> </div>
 </div>
 </div>
 </div>

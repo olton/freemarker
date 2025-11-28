@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+&quot;License&quot;); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+&quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="FreeMarker Manual">
+<toc label="Apache FreeMarker Manual">
   
 <topic
-      label="Preface"
+      label="What is Apache FreeMarker?"
       href="preface.html"
   ></topic>  
 <topic
-      label="I Template Author's Guide"
+      label="I: Template Author&apos;s Guide"
       href="dgui.html"
   >  
 <topic
-      label="1 Getting Started"
+      label="1: Getting Started"
       href="dgui_quickstart.html"
   >  
 <topic
@@ -28,7 +46,7 @@
       href="dgui_quickstart_template.html"
   ></topic></topic>  
 <topic
-      label="2 Values, Types"
+      label="2: Values, Types"
       href="dgui_datamodel.html"
   >  
 <topic
@@ -40,7 +58,7 @@
       href="dgui_datamodel_types.html"
   ></topic></topic>  
 <topic
-      label="3 The Template"
+      label="3: The Template"
       href="dgui_template.html"
   >  
 <topic
@@ -60,7 +78,7 @@
       href="dgui_template_valueinsertion.html"
   ></topic></topic>  
 <topic
-      label="4 Miscellaneous"
+      label="4: Miscellaneous"
       href="dgui_misc.html"
   >  
 <topic
@@ -76,6 +94,10 @@
       href="dgui_misc_namespace.html"
   ></topic>  
 <topic
+      label="Auto-escaping and output formats"
+      href="dgui_misc_autoescaping.html"
+  ></topic>  
+<topic
       label="White-space handling"
       href="dgui_misc_whitespace.html"
   ></topic>  
@@ -84,11 +106,11 @@
       href="dgui_misc_alternativesyntax.html"
   ></topic></topic></topic>  
 <topic
-      label="II Programmer's Guide"
+      label="II: Programmer&apos;s Guide"
       href="pgui.html"
   >  
 <topic
-      label="1 Getting Started"
+      label="1: Getting Started"
       href="pgui_quickstart.html"
   >  
 <topic
@@ -112,7 +134,7 @@
       href="pgui_quickstart_all.html"
   ></topic></topic>  
 <topic
-      label="2 The Data Model"
+      label="2: The Data Model"
       href="pgui_datamodel.html"
   >  
 <topic
@@ -144,7 +166,7 @@
       href="pgui_datamodel_objectWrapper.html"
   ></topic></topic>  
 <topic
-      label="3 The Configuration"
+      label="3: The Configuration"
       href="pgui_config.html"
   >  
 <topic
@@ -166,9 +188,25 @@
 <topic
       label="Error handling"
       href="pgui_config_errorhandling.html"
+  ></topic>  
+<topic
+      label="Template configurations"
+      href="pgui_config_templateconfigurations.html"
+  ></topic>  
+<topic
+      label="Associating output formats with templates"
+      href="pgui_config_outputformatsautoesc.html"
+  ></topic>  
+<topic
+      label="Custom number and date/time formats"
+      href="pgui_config_custom_formats.html"
+  ></topic>  
+<topic
+      label="The &quot;incompatible improvements&quot; setting"
+      href="pgui_config_incompatible_improvements.html"
   ></topic></topic>  
 <topic
-      label="4 Miscellaneous"
+      label="4: Miscellaneous"
       href="pgui_misc.html"
   >  
 <topic
@@ -212,11 +250,11 @@
       href="pgui_misc_jythonwrapper.html"
   ></topic></topic></topic>  
 <topic
-      label="III Template Language Reference"
+      label="III: Template Language Reference"
       href="ref.html"
   >  
 <topic
-      label="1 Built-in Reference"
+      label="1: Built-in Reference"
       href="ref_builtins.html"
   >  
 <topic
@@ -252,11 +290,19 @@
       href="ref_builtins_node.html"
   ></topic>  
 <topic
+      label="Loop variable built-ins"
+      href="ref_builtins_loop_var.html"
+  ></topic>  
+<topic
+      label="Type independent built-ins"
+      href="ref_builtins_type_independent.html"
+  ></topic>  
+<topic
       label="Seldom used and expert built-ins"
       href="ref_builtins_expert.html"
   ></topic></topic>  
 <topic
-      label="2 Directive Reference"
+      label="2: Directive Reference"
       href="ref_directives.html"
   >  
 <topic
@@ -272,11 +318,15 @@
       href="ref_directive_attempt.html"
   ></topic>  
 <topic
+      label="autoesc"
+      href="ref_directive_autoesc.html"
+  ></topic>  
+<topic
       label="compress"
       href="ref_directive_compress.html"
   ></topic>  
 <topic
-      label="escape, noescape"
+      label="escape, noescape (deprecated)"
       href="ref_directive_escape.html"
   ></topic>  
 <topic
@@ -308,7 +358,7 @@
       href="ref_directive_include.html"
   ></topic>  
 <topic
-      label="list, break"
+      label="list, else, items, sep, break, continue"
       href="ref_directive_list.html"
   ></topic>  
 <topic
@@ -320,12 +370,20 @@
       href="ref_directive_macro.html"
   ></topic>  
 <topic
+      label="noautoesc"
+      href="ref_directive_noautoesc.html"
+  ></topic>  
+<topic
       label="noparse"
       href="ref_directive_noparse.html"
   ></topic>  
 <topic
       label="nt"
       href="ref_directive_nt.html"
+  ></topic>  
+<topic
+      label="outputformat"
+      href="ref_directive_outputformat.html"
   ></topic>  
 <topic
       label="setting"
@@ -352,15 +410,15 @@
       href="ref_directive_visit.html"
   ></topic></topic>  
 <topic
-      label="3 Special Variable Reference"
+      label="3: Special Variable Reference"
       href="ref_specvar.html"
   ></topic>  
 <topic
-      label="4 Reserved names in FTL"
+      label="4: Reserved names in FTL"
       href="ref_reservednames.html"
   ></topic>  
 <topic
-      label="5 Deprecated FTL constructs"
+      label="5: Deprecated FTL constructs"
       href="ref_deprecated.html"
   >  
 <topic
@@ -388,7 +446,7 @@
       href="ref_depr_numerical_interpolation.html"
   ></topic></topic></topic>  
 <topic
-      label="IV XML Processing Guide"
+      label="IV: XML Processing Guide"
       href="xgui.html"
   >  
 <topic
@@ -396,7 +454,7 @@
       href="xgui_preface.html"
   ></topic>  
 <topic
-      label="1 Exposing XML documents"
+      label="1: Exposing XML documents"
       href="xgui_expose.html"
   >  
 <topic
@@ -408,7 +466,7 @@
       href="xgui_expose_put.html"
   ></topic></topic>  
 <topic
-      label="2 Imperative XML processing"
+      label="2: Imperative XML processing"
       href="xgui_imperative.html"
   >  
 <topic
@@ -420,7 +478,7 @@
       href="xgui_imperative_formal.html"
   ></topic></topic>  
 <topic
-      label="3 Declarative XML processing"
+      label="3: Declarative XML processing"
       href="xgui_declarative.html"
   >  
 <topic
@@ -432,17 +490,45 @@
       href="xgui_declarative_details.html"
   ></topic></topic></topic>  
 <topic
-      label="V Appendixes"
+      label="V: Appendixes"
       href="app.html"
   >  
 <topic
-      label="A FAQ"
+      label="A: FAQ"
       href="app_faq.html"
   ></topic>  
 <topic
-      label="B Version history"
+      label="B: Version history"
       href="app_versions.html"
   >  
+<topic
+      label="2.3.28"
+      href="versions_2_3_28.html"
+  ></topic>  
+<topic
+      label="2.3.27 (incubating at Apache)"
+      href="versions_2_3_27.html"
+  ></topic>  
+<topic
+      label="2.3.26 (incubating at Apache)"
+      href="versions_2_3_26.html"
+  ></topic>  
+<topic
+      label="2.3.25 (incubating at Apache)"
+      href="versions_2_3_25.html"
+  ></topic>  
+<topic
+      label="2.3.24 (incubating at Apache)"
+      href="versions_2_3_24.html"
+  ></topic>  
+<topic
+      label="2.3.23"
+      href="versions_2_3_23.html"
+  ></topic>  
+<topic
+      label="2.3.22"
+      href="versions_2_3_22.html"
+  ></topic>  
 <topic
       label="2.3.21"
       href="versions_2_3_21.html"
@@ -616,11 +702,11 @@
       href="versions_2_0RC1.html"
   ></topic></topic>  
 <topic
-      label="C Installing FreeMarker"
+      label="C: Installing FreeMarker"
       href="app_install.html"
   ></topic>  
 <topic
-      label="D Legal"
+      label="D: Legal"
       href="app_legal.html"
   >  
 <topic
@@ -639,5 +725,4 @@
       label="Alphabetical Index"
       href="alphaidx.html"
   ></topic></toc>
-
 

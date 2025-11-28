@@ -314,7 +314,28 @@ public class CommandLine {
             ap.addOption(null,
                     cln(Settings.NAME_INHERIT_CONFIGURATION) + " FILE")
                     .desc("Inherits options from a configuration file. "
-                            + "The options in the primary configuration "                            + "file (-C) has higher precednece.");
+                            + "The options in the primary configuration "                            + "file (-C) has higher precedence.");
+            ap.addOption(null, cln(Settings.NAME_OUTPUT_FORMAT) + "=NAME")
+                    .desc("Sets the output format (auto-escaping) of templates, "
+                            + "like \"HTML\", \"XML\", \"RTF\", etc. "
+                            + "By default \"unspecified\". "
+                            + "The --" + cln(Settings.NAME_OUTPUT_FORMATS_BY_PATH)
+                            + " and --" + cln(Settings.NAME_MAP_COMMON_EXTENSIONS_TO_OUTPUT_FORMATS)
+                            + " option overrides this for matching paths.");
+            ap.addOption(null, cln(Settings.NAME_MAP_COMMON_EXTENSIONS_TO_OUTPUT_FORMATS))
+                    .propertyValue("true")
+                    .desc("Should templates with common file extensions (\"html\", \"htm\", \"xml\", etc.) be "
+                            + "mapped to an output format (auto-escaping). Has lower priority than --"
+                            + cln(Settings.NAME_OUTPUT_FORMATS_BY_PATH) + ". Enabled by default if --"
+                            + cln(Settings.NAME_RECOMMENDED_DEFAULTS) + " is at least 0.9.16.");
+            ap.addOption(null, "dont-" + cln(Settings.NAME_MAP_COMMON_EXTENSIONS_TO_OUTPUT_FORMATS))
+                    .property(Settings.NAME_MAP_COMMON_EXTENSIONS_TO_OUTPUT_FORMATS, "false")
+                    .desc("Opposite of --" + cln(Settings.NAME_MAP_COMMON_EXTENSIONS_TO_OUTPUT_FORMATS) + ".");
+            ap.addOption(null, cln(Settings.NAME_OUTPUT_FORMATS_BY_PATH) + "=SEQ")
+                    .desc("List of case(...)-s that choose the "
+                            + "template output format (auto-escaping), e.g.:\n"
+                            + "--output-formats=\"case(**/*.xsl, **/*.wsdl, XML), case(**/*.htm*, HTML)\"\n"
+                            + "By default empty.");
             ap.addOption("M SEQ", cln(Settings.NAME_MODES))
                     .desc("The list of TDD function calls that choose the file "
                             + "processing mode, e.g.:\n"
@@ -329,26 +350,31 @@ public class CommandLine {
             ap.addOption(null, cln(Settings.NAME_BORDERS) + "=SEQ")
                     .desc("The list of TDD function calls that choose header "
                             + "and footer for templates, e.g.:\n"
-                            + "-M 'border(\"<#escape x as x?html>\", "
-                            + "\"</#escape>\", *.htm, *.html), "
+                            + "-M 'border(\"<#import \"/lib/utils.ftlh\" as u><@u.myLayout>\", "
+                            + "\"</@u.myLayout>\", *.htm, *.html), "
                             + "header(\"<#include \\\"/css.ftl\\\">\", *.css)'"
                             );
             ap.addOption("D TDD", cln(Settings.NAME_DATA))
-                    .desc("Creates shared data that all template will see. "
+                    .desc("Creates shared data that all templates will see. "
                             + "<TDD> is the Textual Data Definition, e.g.:\n"
                             + "-D \"properties(style.properties), "                            + "onLine:true\"\n"
                             + "Note that paths like \"style.properties\" are "
-                            + "relatve to the data root directory.");
+                            + "relative to the data root directory.");
+            ap.addOption(null, cln(Settings.NAME_RECOMMENDED_DEFAULTS) + "=VER")
+                    .desc("Use the setting value defaults recommended as of FMPP version <VER>. When you start "
+                            + "a new project, set this to the current FMPP version (" + Engine.getVersion() + "). "
+                            + "In older projects changing this setting can break things (check documentation). "
+                            + "The default is 0.9.15, because this setting was added in 0.9.16.");
             Version maxFMVer = Configuration.getVersion();
-            Version defFMVer = Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS;
             ap.addOption(null, cln(Settings.NAME_FREEMARKER_INCOMPATIBLE_IMPROVEMENTS) + "=VER")
-                    .desc("Enables the FreeMarker fixes/improvements that are not 100% backward compatible, and "
+                    .desc("Enables the FreeMarker fixes/improvements that aren't 100% backward compatible, and "
                             + "were implemented in FreeMarker version <VER>. "
-                            + "In older projects using the highest available 2.3.x is usually a good "
-                            + "compromise. New projects should use the maximum, which is currently \""
-                            + maxFMVer.getMajor() + "." + maxFMVer.getMinor() + "." + maxFMVer.getMicro() + "\". "
-                            + "The default is \""
-                            + defFMVer.getMajor() + "." + defFMVer.getMinor() + "." + defFMVer.getMicro() + "\".");
+                            + "In older projects using the highest available 2.3.x is usually a good compromise, "
+                            + "but check FreeMarker documentation. New projects should use the maximum (in this "
+                            + "installation \"" + maxFMVer.getMajor() + "." + maxFMVer.getMinor() + "."
+                            + maxFMVer.getMicro() + "\". The default depends on the "
+                            + cln(Settings.NAME_RECOMMENDED_DEFAULTS) + " setting; usually you just set that, and not "
+                            + "directly this setting.");
             ap.addOption(null, cln(Settings.NAME_OBJECT_WRAPPER) + "=BSH")
                     .desc("Specifies the ObjectWrapper to use with a BeanShell "
                             + "expression that must evaluate to an object "
@@ -419,14 +445,19 @@ public class CommandLine {
             ap.addOption(null, cln(Settings.NAME_SQL_DATE_AND_TIME_TIME_ZONE) + "=ZONE")
                     .desc("Sets a different time zone for java.sql.Date and java.sql.Time only.");
             ap.addOption(null, cln(Settings.NAME_TAG_SYNTAX) + "=WHAT")
-                    .desc("Sets the tag syntax for templates that doesn't start "
+                    .desc("Sets the tag syntax of the templates that doesn't start "
                             + "with the ftl directive. Possible values are: "
-                            + Settings.VALUE_TAG_SYNTAX_ANGLE_BRACKET + ", "
-                            + Settings.VALUE_TAG_SYNTAX_SQUARE_BRACKET + ", "
-                            + Settings.VALUE_TAG_SYNTAX_AUTO_DETECT + ". The default "
-                            + "depends on the FreeMarker version. The recommended "
-                            + "value is " + Settings.VALUE_TAG_SYNTAX_AUTO_DETECT
-                            + ".");
+                            + Settings.VALUE_TAG_SYNTAX_ANGLE_BRACKET + " (like <#ftl>), "
+                            + Settings.VALUE_TAG_SYNTAX_SQUARE_BRACKET + " (like [#ftl]), "
+                            + Settings.VALUE_TAG_SYNTAX_AUTO_DETECT + ". The default is "
+                            + Settings.VALUE_TAG_SYNTAX_ANGLE_BRACKET + ". The recommended "
+                            + "value is " + Settings.VALUE_TAG_SYNTAX_AUTO_DETECT + ".");
+            ap.addOption(null, cln(Settings.NAME_INTERPOLATION_SYNTAX) + "=WHAT")
+                .desc("Sets the interpolation syntax of the templates. Possible values are: "
+                        + Settings.VALUE_INTERPOLATION_SYNTAX_LEGACY + " (like ${exp} or #{exp}), "
+                        + Settings.VALUE_INTERPOLATION_SYNTAX_DOLLAR + " (${exp} only), "
+                        + Settings.VALUE_INTERPOLATION_SYNTAX_SQUARE_BRACKET + " (like [=exp]). "
+                        + "The default is " + Settings.VALUE_INTERPOLATION_SYNTAX_LEGACY + ".");
             ap.addOption(null, cln(Settings.NAME_CASE_SENSITIVE))
                     .propertyValue("true")
                     .desc("Upper- and lower-case letters are considered as "
@@ -485,13 +516,22 @@ public class CommandLine {
                             + "will be removed from the output file name.");
             ap.addOption(null, cln(Settings.OLD_NAME_REMOVE_POSTFIX) + "=L")
                     .hide();
+            ap.addOption(null, cln(Settings.NAME_REMOVE_FREEMARKER_EXTENSIONS))
+                    .propertyValue("true")
+                    .desc("Remove \"ftl\", \"ftlh\", and \"ftlx\" file extensions from the output file name. "
+                            + "(This is applied last among the settings that tranform the output file name.) "
+                            + "Enabled by default if --" + cln(Settings.NAME_RECOMMENDED_DEFAULTS)
+                            + " is at least 0.9.16.");
+            ap.addOption(null, "dont-" + cln(Settings.NAME_REMOVE_FREEMARKER_EXTENSIONS))
+                    .property(Settings.NAME_REMOVE_FREEMARKER_EXTENSIONS, "false")
+                    .desc("Opposite of --" + cln(Settings.NAME_REMOVE_FREEMARKER_EXTENSIONS) + ".");
             ap.addOption("L FILE", cln(Settings.NAME_LOG_FILE))
                     .implied("none")
                     .desc("Sets the log file. "
                             + "Use \"none\" (-L none) to disable logging. "
                             + "The default is \"none\".");
             od = ap.addOption(null, cln(Settings.NAME_APPEND_LOG_FILE))
-                    .desc("If the log file already exists, it will be "                            + "continuted, instead of restarting it.");
+                    .desc("If the log file already exists, it will be "                            + "continued, instead of restarting it.");
             if (impliedAppendLogFile) {
                 setAsDefault(od);
             }
@@ -647,11 +687,9 @@ public class CommandLine {
             }
 
             if (ops.containsKey(OPTION_VERSION)) {
-                p("FMPP version " + Engine.getVersionNumber()
-                        + ", build " + Engine.getBuildInfo());
-                p("Currently using FreeMarker version "
-                        + Engine.getFreeMarkerVersionNumber());
-                p("For the latest version visit: "                        + "http://fmpp.sourceforge.net/");
+                p("FMPP version " + Engine.getVersion() + ", build " + Engine.getBuildInfo());
+                p("Currently using FreeMarker version " + Engine.getFreeMarkerVersion());
+                p("For the latest version visit: http://fmpp.sourceforge.net/");
                 throw FinishedException.INSTANCE;
             }
 
@@ -901,7 +939,7 @@ public class CommandLine {
         } catch (FinishedException e) {
             exitCode = 0;
         } catch (Throwable e) {
-            pe("INTERNAL ERROR:");
+            pl("INTERNAL ERROR:");
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);

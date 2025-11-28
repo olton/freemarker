@@ -171,7 +171,7 @@ public class TemplateEnvironment {
         
         // constants
         ppHash.put("slash", File.separator);
-        ppHash.put("version", Engine.getVersionNumber());
+        ppHash.put("version", Engine.getVersion().toString());
         ppHash.put("freemarkerVersion", Engine.getFreeMarkerVersionNumber());
         
         // live variables
@@ -248,7 +248,7 @@ public class TemplateEnvironment {
     
     /**
      * Similar to {@link Engine#getData}, but it also sees file processing
-     * specifict variables (local data).
+     * specific variables (local data).
      * 
      * @param name the name of the variable.
      * @return the value of the variable, or {@code null} if no variable
@@ -256,7 +256,7 @@ public class TemplateEnvironment {
      */
     public Object getData(String name) {
         Object o = localData.get(name);
-        return o == null ? eng.getData(name) : o;
+        return o != null ? o : eng.getData(name);
     }
     
     /**
@@ -440,7 +440,7 @@ public class TemplateEnvironment {
     }
 
     /**
-     * Convets a file object to a source root relative UN*X style path.
+     * Converts a file object to a source root relative UN*X style path.
      */
     public String toSourceRootRelativePath(File f) throws IOException {
         return FileUtil.pathToUnixStyle(
