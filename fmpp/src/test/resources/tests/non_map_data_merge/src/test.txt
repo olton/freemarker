@@ -1,6 +1,0 @@
-${a}
-${b}
-${c}
-${d}
-${a?nodeType} ${a?nodeName}
-${a?parent?nodeType}

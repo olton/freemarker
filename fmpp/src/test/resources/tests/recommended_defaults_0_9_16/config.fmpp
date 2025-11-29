@@ -1,3 +1,0 @@
-inheritConfiguration: ../recommended_defaults_0_9_15/config.fmpp
-outputRoot: out
-recommendedDefaults: 0.9.16

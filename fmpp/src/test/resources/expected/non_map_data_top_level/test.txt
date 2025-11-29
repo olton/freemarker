@@ -1,5 +1,0 @@
-A from JSON
-B from JSON
-C from JSON
-string a
-object

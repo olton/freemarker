@@ -1,3 +1,0 @@
-<#assign m = pp.loadData('eval', 'm = new HashMap(); m.put(1, "one"); return m;')>
-${m?size}
-${m?api.get(1?int)}

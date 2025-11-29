@@ -1,6 +1,0 @@
-A from JSON
-B from JSON
-C from config
-D from config
-string a
-object

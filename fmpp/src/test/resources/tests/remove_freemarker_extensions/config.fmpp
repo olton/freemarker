@@ -1,5 +1,0 @@
-sourceRoot: src
-outputRoot: dst
-removeExtensions: rem
-removeFreemarkerExtensions
-freemarkerIncompatibleImprovements: 2.3.28

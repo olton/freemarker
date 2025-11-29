@@ -1,5 +1,0 @@
-sourceRoot: src
-outputRoot: out
-outputFormat: plainText
-outputFormatsByPath: case("**overridden*", undefined)
-mapCommonExtensionsToOutputFormats: true
