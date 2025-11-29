@@ -75,7 +75,7 @@
 
     <mkdir dir="build/classes" />
     <echo>Compling classes using boot classpath ${bootclasspath.path}</echo>
-    <javac bootclasspath="${bootclasspath.path}"
+    <javac release="17"
            includeantruntime="false"
            srcdir="src/main/java"
            destdir="build/classes"
