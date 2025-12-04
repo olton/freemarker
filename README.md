@@ -6,7 +6,13 @@ Apache FreeMarker® is a template engine: a Java library to generate text output
 
 ## Freemarker integration for NodeJS
 
-This package a wrapper for Apache FreeMarker.
+This package is a wrapper for Apache FreeMarker.
+This version doesn't include fmpp source, only `jar` files:
+
+- bsh v2.1.1
+- freemarker v2.3.34
+- resolver v1.2
+- imageinfo v1.9
 
 ## How to use
 
